@@ -10,4 +10,4 @@ Early-stage politics project. No build system, test runner, or dependencies are 
 
 Private GitHub repo: `lloydy1982/politics-project`
 
-Commit all changes with clean, descriptive commit messages as work progresses.
+**Commit and push frequently.** After every meaningful unit of work — new file, feature, fix, or config change — stage the relevant files and push to `origin/main`. Use clean, descriptive commit messages focused on the "why". Never let significant work sit uncommitted.
