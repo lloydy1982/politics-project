@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Find out which Welsh Senedd party best matches your views ahead of the 2026 election">
+<title>Welsh Senedd 2026 — Find Your Party Match</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#C8102E;--dark:#0f1923;--text:#1a1a1a;--muted:#666;
+  --bg:#f4f4f4;--card:#fff;--border:#e2e2e2;--radius:12px;
+  --lab:#E4003B;--con:#0087DC;--pc:#3F8428;--ld:#FAA61A;--grn:#00B140;--ref:#12B6CF;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5}
+
+/* Progress */
+.prog-track{position:fixed;top:0;left:0;right:0;height:4px;background:#ddd;z-index:300}
+.prog-fill{height:100%;background:var(--red);transition:width .4s ease;width:0%}
+
+/* Header */
+.hdr{background:var(--dark);color:#fff;padding:20px 16px 16px;text-align:center}
+.hdr-flag{font-size:1.8rem;margin-bottom:6px}
+.hdr h1{font-size:1.15rem;font-weight:700;letter-spacing:-.02em}
+.hdr p{font-size:.78rem;opacity:.6;margin-top:3px}
+
+/* Layout */
+.wrap{max-width:580px;margin:0 auto;padding:20px 14px 48px}
+.screen{display:none}.screen.active{display:block}
+
+/* Start screen */
+.start-card{background:var(--card);border-radius:var(--radius);padding:28px 22px;border:1px solid var(--border);text-align:center}
+.start-card h2{font-size:1.35rem;font-weight:700;color:var(--dark);margin-bottom:10px}
+.start-card .lead{color:var(--muted);font-size:.92rem;margin-bottom:16px}
+.pills{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.pill{background:#f0f0f0;padding:4px 11px;border-radius:20px;font-size:.75rem;color:var(--muted)}
+
+/* Buttons */
+.btn{display:inline-block;padding:13px 28px;border-radius:8px;border:none;cursor:pointer;font-size:.95rem;font-weight:600;transition:all .18s;width:100%;text-align:center}
+.btn-red{background:var(--red);color:#fff}.btn-red:hover{background:#a8002a}
+.btn-ghost{background:transparent;border:2px solid var(--border);color:var(--text)}.btn-ghost:hover{border-color:#aaa}
+
+/* Question */
+.q-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.q-area{font-size:.73rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--red)}
+.q-num{font-size:.75rem;color:var(--muted)}
+.q-card{background:var(--card);border-radius:var(--radius);padding:22px 18px;border:1px solid var(--border)}
+.q-card h2{font-size:1.05rem;font-weight:700;color:var(--dark);margin-bottom:18px;line-height:1.45}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:block;width:100%;padding:13px 15px;background:#fafafa;border:2px solid var(--border);border-radius:8px;text-align:left;cursor:pointer;font-size:.9rem;line-height:1.4;transition:all .18s;color:var(--text);font-family:inherit}
+.opt:hover{border-color:var(--red);background:#fff8f8}
+.opt.sel{border-color:var(--red);background:#fff0f0;color:var(--red);font-weight:500}
+
+/* Results */
+.res-hdr{text-align:center;padding:20px 0 6px}
+.res-hdr h2{font-size:1.35rem;font-weight:700;color:var(--dark)}
+.res-hdr p{font-size:.82rem;color:var(--muted);margin-top:3px}
+
+/* Winner */
+.win-card{background:var(--card);border-radius:var(--radius);padding:24px 20px;border:1px solid var(--border);margin:16px 0 12px;text-align:center;position:relative;overflow:hidden}
+.win-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--pc)}
+.win-badge{display:inline-block;background:#ffd700;color:#6b5000;font-size:.7rem;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:14px;text-transform:uppercase;letter-spacing:.04em}
+.logo-img{width:90px;height:54px;object-fit:contain;display:block;margin:0 auto 10px}
+.logo-fb{width:90px;height:54px;display:none;align-items:center;justify-content:center;margin:0 auto 10px;border-radius:7px;font-weight:700;font-size:1rem;color:#fff}
+.win-name{font-size:1.2rem;font-weight:700;color:var(--dark);margin-bottom:2px}
+.win-pct{font-size:2.4rem;font-weight:800;margin:6px 0}
+.win-pct span{font-size:.95rem;font-weight:400;color:var(--muted)}
+.win-why{font-size:.85rem;color:var(--muted);line-height:1.65;margin-top:10px;text-align:left}
+
+/* Runner-ups */
+.runners{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.run-card{background:var(--card);border-radius:var(--radius);padding:14px 12px;border:1px solid var(--border);text-align:center}
+.run-badge{font-size:.65rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.run-logo-img{width:64px;height:38px;object-fit:contain;display:block;margin:0 auto 6px}
+.run-logo-fb{width:64px;height:38px;display:none;align-items:center;justify-content:center;margin:0 auto 6px;border-radius:6px;font-weight:700;font-size:.8rem;color:#fff}
+.run-name{font-size:.82rem;font-weight:600;color:var(--dark);margin-bottom:3px}
+.run-pct{font-size:1.3rem;font-weight:700}
+
+/* All results */
+.all-box{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;margin-bottom:12px}
+.all-box-hdr{padding:12px 14px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);border-bottom:1px solid var(--border);background:#fafafa}
+.res-row{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--border)}
+.res-row:last-child{border-bottom:none}
+.res-rank{width:20px;font-size:.8rem;color:var(--muted);font-weight:600;flex-shrink:0;text-align:center}
+.res-mid{flex:1}
+.res-pname{font-size:.8rem;font-weight:600;margin-bottom:4px}
+.res-track{height:7px;background:#eee;border-radius:4px;overflow:hidden}
+.res-bar{height:100%;border-radius:4px;width:0;transition:width 1.1s ease}
+.res-pct{font-size:.85rem;font-weight:700;width:36px;text-align:right;flex-shrink:0}
+
+/* Share */
+.share-row{display:flex;gap:9px;margin-bottom:14px}
+.share-row .btn{font-size:.85rem;padding:11px}
+.restart{display:block;width:100%;text-align:center;font-size:.8rem;color:var(--muted);background:none;border:none;cursor:pointer;padding:6px;text-decoration:underline;font-family:inherit}
+.disclaimer{font-size:.72rem;color:var(--muted);text-align:center;margin-top:14px;line-height:1.7;padding:0 6px}
+
+@keyframes fadein{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.screen.active .q-card,.screen.active .start-card{animation:fadein .28s ease}
+@media(max-width:380px){.runners{grid-template-columns:1fr}.hdr h1{font-size:1rem}}
+</style>
+</head>
+<body>
+
+<div class="prog-track"><div class="prog-fill" id="pf"></div></div>
+
+<header class="hdr">
+  <div class="hdr-flag">🏴󠁧󠁢󠁷󠁬󠁳󠁿</div>
+  <h1>Welsh Senedd 2026 — Find Your Party Match</h1>
+  <p>12 questions &nbsp;·&nbsp; 6 parties compared &nbsp;·&nbsp; ~2 minutes</p>
+</header>
+
+<main class="wrap">
+
+  <!-- START -->
+  <div class="screen active" id="s-start">
+    <div class="start-card">
+      <h2>Which party speaks for you?</h2>
+      <p class="lead">Answer 12 questions on Welsh policy issues and find out which party best matches your views ahead of the 2026 Senedd election.</p>
+      <div class="pills">
+        <span class="pill">🗳️ 6 parties compared</span>
+        <span class="pill">⏱️ ~2 minutes</span>
+        <span class="pill">🔒 No data collected</span>
+        <span class="pill">📱 Works offline</span>
+      </div>
+      <button class="btn btn-red" onclick="startQuiz()">Start the quiz →</button>
+    </div>
+  </div>
+
+  <!-- QUESTION -->
+  <div class="screen" id="s-q">
+    <div class="q-meta">
+      <span class="q-area" id="qArea"></span>
+      <span class="q-num" id="qNum"></span>
+    </div>
+    <div class="q-card">
+      <h2 id="qText"></h2>
+      <div class="opts" id="qOpts"></div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="screen" id="s-res">
+    <div class="res-hdr">
+      <h2>Your results</h2>
+      <p>Based on your answers across 12 Welsh policy areas</p>
+    </div>
+    <div class="win-card" id="winCard">
+      <div class="win-badge">🥇 Best match</div>
+      <div id="winLogo"></div>
+      <div class="win-name" id="winName"></div>
+      <div class="win-pct" id="winPct"></div>
+      <div class="win-why" id="winWhy"></div>
+    </div>
+    <div class="runners" id="runners"></div>
+    <div class="all-box">
+      <div class="all-box-hdr">All parties ranked</div>
+      <div id="allRows"></div>
+    </div>
+    <div class="share-row">
+      <button class="btn btn-red" onclick="doShare()">Share results</button>
+      <button class="btn btn-ghost" id="copyBtn" onclick="doCopy()">Copy link</button>
+    </div>
+    <button class="restart" onclick="restart()">← Start over</button>
+    <p class="disclaimer">
+      Party positions reflect publicly available manifestos and policy statements as of early 2026.
+      Additional parties may also stand. This tool is independent and not affiliated with any party or the Senedd.
+      Always verify with official sources before voting.
+    </p>
+  </div>
+
+</main>
+
+<script>
+// ── PARTIES ──────────────────────────────────────────────────────────────────
+const P = [
+  {
+    id:'lab', name:'Welsh Labour', short:'Labour', color:'#E4003B', initials:'LAB',
+    logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Labour_Party_%28UK%29_logo.svg/200px-Labour_Party_%28UK%29_logo.svg.png',
+    why:{
+      nhs:'a well-funded, fully public NHS',
+      education:'investment in schools and significantly higher teacher pay',
+      housing:'council-built affordable homes and a reformed rental market',
+      climate:'a measured, jobs-focused path to net zero by 2050',
+      economy:"workers' rights, fair wages and public investment in communities",
+      devolution:'stronger devolution within the United Kingdom',
+      transport:'balancing road improvements with public transport investment',
+      socialcare:'more care funding and free care for those who cannot afford it',
+      policing:'more police officers and stronger support for victims',
+      agriculture:'guaranteed Welsh food production and fair farm support',
+      energy:'a reliable mix of renewables and nuclear power',
+      language:'growing the Welsh language without compulsion'
+    }
+  },
+  {
+    id:'con', name:'Welsh Conservatives', short:'Conservatives', color:'#0087DC', initials:'CON',
+    logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Conservative_Party_%28UK%29_logo.svg/200px-Conservative_Party_%28UK%29_logo.svg.png',
+    why:{
+      nhs:'private sector involvement to cut NHS waiting lists',
+      education:'higher standards through accountability and school choice',
+      housing:'cutting planning red tape so the market can build more homes',
+      climate:'net zero at a pace that protects jobs and energy security',
+      economy:'lower taxes and less red tape to attract business investment',
+      devolution:'a strong Union with no further transfer of powers from Westminster',
+      transport:'road improvements and ending schemes that penalise drivers',
+      socialcare:'reform through private sector competition to drive up quality',
+      policing:'more officers on the streets and tougher sentences',
+      agriculture:'scrapping EU-derived farming rules to free up Welsh farmers',
+      energy:'North Sea gas and new nuclear for energy independence',
+      language:'proportional Welsh language spending that does not disadvantage English speakers'
+    }
+  },
+  {
+    id:'pc', name:'Plaid Cymru', short:'Plaid', color:'#3F8428', initials:'PC',
+    logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Plaid_Cymru_logo.svg/200px-Plaid_Cymru_logo.svg.png',
+    why:{
+      nhs:'a fully public NHS with significant extra investment',
+      education:'expanding Welsh-medium education and paying teachers much more',
+      housing:'rent controls and large-scale social house building',
+      climate:'ambitious net zero targets and a green economic transformation',
+      economy:'Welsh economic independence and community-owned wealth',
+      devolution:'full Welsh independence',
+      transport:'major investment in buses, trains and cycling over road building',
+      socialcare:'free personal care for all who need it',
+      policing:'devolving justice to Wales and reforming the system',
+      agriculture:'protecting Welsh farms and farmland with fair direct support',
+      energy:'100% renewable energy with community ownership',
+      language:'full bilingualism and expansion of Welsh-medium services'
+    }
+  },
+  {
+    id:'ld', name:'Liberal Democrats', short:'Lib Dems', color:'#FAA61A', initials:'LD',
+    logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Liberal_Democrats_logo.svg/200px-Liberal_Democrats_logo.svg.png',
+    why:{
+      nhs:'higher NHS funding with a strong focus on mental health',
+      education:'more money per pupil and better mental health support in schools',
+      housing:'reforming the rental market and building genuinely affordable homes',
+      climate:'ambitious but balanced climate action with a green jobs programme',
+      economy:'skills investment, green industries and support for small business',
+      devolution:'a federal UK where Wales, Scotland and England have equal powers',
+      transport:'significant investment in buses, rail and active travel',
+      socialcare:'free personal care for all who need it, funded through taxation',
+      policing:'mental health and drug treatment to tackle the root causes of crime',
+      agriculture:'linking farm payments to environmental and biodiversity outcomes',
+      energy:'a strong renewable energy transition with energy efficiency homes',
+      language:'supporting Welsh language while protecting English-speaking communities'
+    }
+  },
+  {
+    id:'grn', name:'Green Party', short:'Greens', color:'#00B140', initials:'GRN',
+    logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Green_Party_of_England_and_Wales_logo.svg/200px-Green_Party_of_England_and_Wales_logo.svg.png',
+    why:{
+      nhs:'a fully public NHS with preventative health at its core',
+      education:'less high-stakes testing, more mental health support and creativity',
+      housing:'rent controls and community-owned affordable housing',
+      climate:'the most ambitious climate action — net zero well before 2050',
+      economy:'a green economy, a living wage and community wealth building',
+      devolution:'the right of Wales to choose independence',
+      transport:'ending new road building and investing fully in public transport and cycling',
+      socialcare:'fully publicly funded social care as a right',
+      policing:'investment in mental health, poverty reduction and drug reform',
+      agriculture:'rewilding, biodiversity payments and sustainable farming support',
+      energy:'100% renewables with no new fossil fuels or nuclear power stations',
+      language:'protecting Welsh as a living language and cultural treasure'
+    }
+  },
+  {
+    id:'ref', name:'Reform UK', short:'Reform', color:'#12B6CF', initials:'REF',
+    logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Reform_UK_party_logo_%282024%29.svg/200px-Reform_UK_party_logo_%282024%29.svg.png',
+    why:{
+      nhs:'cutting NHS bureaucracy and allowing private sector competition',
+      education:'returning to traditional core subjects and ending ideological teaching',
+      housing:'scrapping regulations that push up costs and letting the market build',
+      climate:'scrapping net zero targets to protect jobs and cut household energy bills',
+      economy:'low taxes, minimal regulation and a pro-growth environment',
+      devolution:'reducing Senedd powers and returning control to Westminster',
+      transport:'expanding roads and ending charges that punish ordinary drivers',
+      socialcare:'reducing state involvement and supporting family-based care',
+      policing:'zero tolerance policing and strict enforcement with no excuses',
+      agriculture:'scrapping EU-derived farming red tape and letting Welsh farmers farm',
+      energy:'domestic oil and gas, opposing subsidised wind farm expansion',
+      language:'English as the primary language of public services in Wales'
+    }
+  }
+];
+
+// ── QUESTIONS ────────────────────────────────────────────────────────────────
+const Q = [
+  {
+    area:'NHS Wales', id:'nhs',
+    q:'The NHS in Wales should be...',
+    opts:[
+      {t:'Kept fully public and funded significantly more — patient need, not profit',   s:{lab:2,con:0,pc:3,ld:1,grn:3,ref:0}},
+      {t:'Better funded and more efficient, with a focus on cutting waiting lists',       s:{lab:3,con:1,pc:1,ld:3,grn:1,ref:0}},
+      {t:'Reformed to allow private providers to help tackle NHS backlogs',              s:{lab:0,con:3,pc:0,ld:1,grn:0,ref:2}},
+      {t:'Stripped of management layers and opened to market competition',               s:{lab:0,con:2,pc:0,ld:0,grn:0,ref:3}}
+    ]
+  },
+  {
+    area:'Education & Schools', id:'education',
+    q:'Welsh schools should primarily focus on...',
+    opts:[
+      {t:'Expanding Welsh-medium teaching and paying teachers much more',                s:{lab:1,con:0,pc:3,ld:1,grn:1,ref:0}},
+      {t:'Higher standards through accountability, inspections and school choice',       s:{lab:0,con:3,pc:0,ld:1,grn:0,ref:2}},
+      {t:'More funding per pupil, mental health support and inclusion for every child',  s:{lab:2,con:0,pc:1,ld:3,grn:3,ref:0}},
+      {t:'Traditional teaching of core subjects, cutting unnecessary topics',            s:{lab:0,con:2,pc:0,ld:0,grn:0,ref:3}}
+    ]
+  },
+  {
+    area:'Housing & Rent', id:'housing',
+    q:'To tackle the housing crisis, Wales should...',
+    opts:[
+      {t:'Introduce rent controls and build large numbers of social homes',              s:{lab:2,con:0,pc:3,ld:1,grn:3,ref:0}},
+      {t:'Cut planning red tape to build more homes and help first-time buyers',         s:{lab:1,con:3,pc:0,ld:2,grn:0,ref:1}},
+      {t:'Give councils more power to build affordable homes and reform private renting', s:{lab:3,con:0,pc:2,ld:3,grn:2,ref:0}},
+      {t:'Scrap regulations that push up costs and let the market build what is needed', s:{lab:0,con:1,pc:0,ld:0,grn:0,ref:3}}
+    ]
+  },
+  {
+    area:'Climate & Environment', id:'climate',
+    q:'On climate and the environment, Wales should...',
+    opts:[
+      {t:'Set the most ambitious targets — net zero well before 2050, ban fossil fuels', s:{lab:0,con:0,pc:2,ld:1,grn:3,ref:0}},
+      {t:'Act ambitiously — net zero by 2035–2045, with green jobs at the centre',       s:{lab:2,con:0,pc:3,ld:3,grn:2,ref:0}},
+      {t:'Reach net zero by 2050 without damaging jobs or energy security',              s:{lab:3,con:3,pc:0,ld:1,grn:0,ref:0}},
+      {t:'Scrap or delay net zero targets — they push up bills and destroy Welsh jobs',  s:{lab:0,con:1,pc:0,ld:0,grn:0,ref:3}}
+    ]
+  },
+  {
+    area:'Economy & Jobs', id:'economy',
+    q:'The Welsh economy would be best served by...',
+    opts:[
+      {t:"Strong workers' rights, fair wages and public investment in Welsh communities", s:{lab:3,con:0,pc:2,ld:1,grn:2,ref:0}},
+      {t:'Lower taxes, less red tape and a business-friendly environment',                s:{lab:0,con:3,pc:0,ld:1,grn:0,ref:3}},
+      {t:'Investing in green industries and skills to create sustainable, well-paid jobs',s:{lab:1,con:0,pc:2,ld:2,grn:3,ref:0}},
+      {t:'Full Welsh economic independence — Wales controls its own taxes and trade',     s:{lab:0,con:0,pc:3,ld:1,grn:1,ref:0}}
+    ]
+  },
+  {
+    area:'Devolution & Independence', id:'devolution',
+    q:"On Wales's constitutional future, I believe...",
+    opts:[
+      {t:'Wales should become a fully independent nation',                               s:{lab:0,con:0,pc:3,ld:0,grn:2,ref:0}},
+      {t:'Wales needs more powers — the Senedd should control more of Welsh life',       s:{lab:3,con:0,pc:2,ld:2,grn:1,ref:0}},
+      {t:'A federal UK — Wales, Scotland and England with equal, strong parliaments',    s:{lab:1,con:0,pc:1,ld:3,grn:2,ref:0}},
+      {t:'The Senedd has too many powers — return more control to Westminster',          s:{lab:0,con:3,pc:0,ld:0,grn:0,ref:3}}
+    ]
+  },
+  {
+    area:'Transport & Roads', id:'transport',
+    q:'Transport spending in Wales should prioritise...',
+    opts:[
+      {t:'Public transport — buses, trains, cycling — over any new road building',       s:{lab:1,con:0,pc:3,ld:3,grn:3,ref:0}},
+      {t:'A balance of road improvements and public transport investment',                s:{lab:3,con:2,pc:1,ld:1,grn:0,ref:1}},
+      {t:'Improving the road network — public transport can never serve rural Wales',    s:{lab:0,con:3,pc:0,ld:0,grn:0,ref:2}},
+      {t:'Roads first, and scrapping road charges that punish ordinary drivers',         s:{lab:0,con:1,pc:0,ld:0,grn:0,ref:3}}
+    ]
+  },
+  {
+    area:'Social Care', id:'socialcare',
+    q:'For elderly and disabled people who need care, Wales should...',
+    opts:[
+      {t:'Introduce free personal care for all who need it, funded through taxation',    s:{lab:1,con:0,pc:3,ld:3,grn:3,ref:0}},
+      {t:'Increase care funding and pay carers better, with free care for those unable to afford it', s:{lab:3,con:1,pc:2,ld:2,grn:2,ref:0}},
+      {t:'Bring in more private providers to compete and drive up care quality',          s:{lab:0,con:3,pc:0,ld:0,grn:0,ref:1}},
+      {t:'Reduce the state role — support families to take responsibility for their own',s:{lab:0,con:2,pc:0,ld:0,grn:0,ref:3}}
+    ]
+  },
+  {
+    area:'Policing & Justice', id:'policing',
+    q:'To keep Welsh communities safe and reduce crime, we should...',
+    opts:[
+      {t:'Devolve justice to Wales and reform the system to tackle inequality',          s:{lab:0,con:0,pc:3,ld:1,grn:1,ref:0}},
+      {t:'Put more police on the streets and ensure tougher sentences',                  s:{lab:3,con:3,pc:0,ld:1,grn:0,ref:2}},
+      {t:'Invest in mental health, drug treatment and poverty reduction to prevent crime',s:{lab:1,con:0,pc:1,ld:3,grn:3,ref:0}},
+      {t:'Zero tolerance — strict enforcement of law and order, no excuses',             s:{lab:0,con:2,pc:0,ld:0,grn:0,ref:3}}
+    ]
+  },
+  {
+    area:'Agriculture & Farming', id:'agriculture',
+    q:'Welsh farming should be supported by...',
+    opts:[
+      {t:'Strong direct subsidies and guarantees to protect Welsh farms and food production', s:{lab:2,con:2,pc:3,ld:1,grn:0,ref:1}},
+      {t:'Linking farm payments to environmental outcomes — nature, biodiversity, carbon',s:{lab:1,con:0,pc:1,ld:3,grn:3,ref:0}},
+      {t:'Cutting EU-derived farming red tape and letting Welsh farmers get on with farming', s:{lab:0,con:3,pc:0,ld:0,grn:0,ref:3}},
+      {t:'Building Welsh food brands, expanding exports and guaranteeing farm markets',   s:{lab:3,con:1,pc:2,ld:1,grn:1,ref:0}}
+    ]
+  },
+  {
+    area:'Energy', id:'energy',
+    q:'Wales should power itself through...',
+    opts:[
+      {t:'100% renewables — wind, solar and tidal — with no new gas or nuclear power',   s:{lab:0,con:0,pc:3,ld:1,grn:3,ref:0}},
+      {t:'A mix of renewables and new nuclear for clean, secure and affordable energy',  s:{lab:3,con:2,pc:1,ld:3,grn:0,ref:0}},
+      {t:'Expanding oil and gas production alongside nuclear for energy independence',    s:{lab:0,con:3,pc:0,ld:0,grn:0,ref:2}},
+      {t:'Scrapping wind farm subsidies, cutting green levies and using our own gas',     s:{lab:0,con:1,pc:0,ld:0,grn:0,ref:3}}
+    ]
+  },
+  {
+    area:'Welsh Language', id:'language',
+    q:'Welsh language policy in public life should...',
+    opts:[
+      {t:'Pursue full bilingualism — Welsh equal to English across all public services',  s:{lab:1,con:0,pc:3,ld:1,grn:2,ref:0}},
+      {t:'Support the one million speakers target and grow the language, keeping it voluntary', s:{lab:3,con:1,pc:2,ld:2,grn:2,ref:0}},
+      {t:'Maintain current support but ensure English speakers are never disadvantaged',  s:{lab:1,con:3,pc:0,ld:2,grn:1,ref:1}},
+      {t:'Reduce Welsh language spending — English should be the primary public service language', s:{lab:0,con:1,pc:0,ld:0,grn:0,ref:3}}
+    ]
+  }
+];
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+let cur = 0, ans = [], sc = {};
+
+// ── CORE ────────────────────────────────────────────────────────────────────
+function screen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s-'+id).classList.add('active');
+}
+
+function startQuiz(){
+  cur=0; ans=[]; sc={};
+  P.forEach(p=>sc[p.id]=0);
+  renderQ(0);
+  screen('q');
+}
+
+function setProgress(n,total){
+  document.getElementById('pf').style.width=(n/total*100)+'%';
+}
+
+function renderQ(i){
+  const q=Q[i];
+  document.getElementById('qArea').textContent=q.area;
+  document.getElementById('qNum').textContent=`${i+1} of ${Q.length}`;
+  document.getElementById('qText').textContent=q.q;
+  const el=document.getElementById('qOpts');
+  el.innerHTML='';
+  q.opts.forEach((o,j)=>{
+    const b=document.createElement('button');
+    b.className='opt'; b.textContent=o.t;
+    b.onclick=()=>pick(j);
+    el.appendChild(b);
+  });
+  setProgress(i,Q.length);
+}
+
+function pick(j){
+  document.querySelectorAll('.opt').forEach(b=>b.classList.remove('sel'));
+  document.querySelectorAll('.opt')[j].classList.add('sel');
+  setTimeout(()=>{
+    const q=Q[cur];
+    ans.push({qid:q.id,j});
+    Object.entries(q.opts[j].s).forEach(([id,pts])=>sc[id]=(sc[id]||0)+pts);
+    cur++;
+    if(cur<Q.length){ renderQ(cur); }
+    else{ setProgress(Q.length,Q.length); buildResults(); screen('res'); }
+  },240);
+}
+
+// ── RESULTS ─────────────────────────────────────────────────────────────────
+function maxFor(pid){
+  return Q.reduce((sum,q)=>sum+Math.max(...q.opts.map(o=>o.s[pid]||0)),0);
+}
+
+function buildResults(){
+  const ranked=P.map(p=>({
+    ...p, score:sc[p.id]||0, max:maxFor(p.id),
+    pct:Math.round((sc[p.id]||0)/maxFor(p.id)*100)
+  })).sort((a,b)=>b.pct-a.pct);
+
+  const w=ranked[0], r2=ranked[1], r3=ranked[2];
+  window._winner=w; window._ranked=ranked;
+
+  // Winner card top border colour
+  document.getElementById('winCard').style.cssText=
+    `--pc:${w.color};--win-color:${w.color}`;
+  document.querySelector('.win-card::before') // can't do this via JS directly
+  // Instead set via inline style on a child — use the badge as colour indicator
+  document.getElementById('winCard').querySelector('.win-badge').style.borderLeft=`4px solid ${w.color}`;
+  // Set top border via a tiny style injection
+  const styleEl=document.getElementById('win-border-style')||document.createElement('style');
+  styleEl.id='win-border-style';
+  styleEl.textContent=`.win-card::before{background:${w.color}!important}`;
+  document.head.appendChild(styleEl);
+
+  document.getElementById('winLogo').innerHTML=logoHtml(w,'logo-img','logo-fb');
+  document.getElementById('winName').textContent=w.name;
+  document.getElementById('winPct').innerHTML=`${w.pct}<span>% match</span>`;
+  document.getElementById('winWhy').innerHTML=buildWhy(w);
+
+  // Runners up
+  document.getElementById('runners').innerHTML=[r2,r3].map((p,i)=>`
+    <div class="run-card">
+      <div class="run-badge">${i===0?'🥈 2nd place':'🥉 3rd place'}</div>
+      ${logoHtml(p,'run-logo-img','run-logo-fb')}
+      <div class="run-name">${p.name}</div>
+      <div class="run-pct" style="color:${p.color}">${p.pct}%</div>
+    </div>`).join('');
+
+  // All rows
+  document.getElementById('allRows').innerHTML=ranked.map((p,i)=>`
+    <div class="res-row">
+      <div class="res-rank">${i+1}</div>
+      <div class="res-mid">
+        <div class="res-pname">${p.name}</div>
+        <div class="res-track"><div class="res-bar" style="background:${p.color}" data-w="${p.pct}"></div></div>
+      </div>
+      <div class="res-pct" style="color:${p.color}">${p.pct}%</div>
+    </div>`).join('');
+
+  requestAnimationFrame(()=>{
+    document.querySelectorAll('.res-bar').forEach(b=>b.style.width=b.dataset.w+'%');
+  });
+}
+
+function logoHtml(p,imgCls,fbCls){
+  return `<img src="${p.logo}" alt="${p.name} logo" class="${imgCls}"
+    onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+    <div class="${fbCls}" style="background:${p.color};display:none">${p.initials}</div>`;
+}
+
+function buildWhy(w){
+  // Find questions where user matched this party best (score ≥ 2)
+  const matches=ans.map((a,i)=>{
+    const q=Q[i];
+    const score=q.opts[a.j].s[w.id]||0;
+    return score>=2 ? (w.why[q.id]||null) : null;
+  }).filter(Boolean).slice(0,3);
+
+  if(!matches.length)
+    return `Your overall views align most closely with ${w.name} across the 12 policy areas tested.`;
+
+  const caps=matches[0][0].toUpperCase()+matches[0].slice(1);
+  const rest=matches.slice(1).map(m=>m[0].toLowerCase()+m.slice(1));
+  let line;
+  if(rest.length===0) line=caps+'.';
+  else if(rest.length===1) line=`${caps}, and ${rest[0]}.`;
+  else line=`${caps}, ${rest[0]}, and ${rest[1]}.`;
+
+  return `You matched ${w.name} on: ${line} Across the quiz as a whole, ${w.short} came closest to your stated positions on Welsh policy.`;
+}
+
+// ── SHARE ────────────────────────────────────────────────────────────────────
+function doShare(){
+  const w=window._winner;
+  const text=`I just took the Welsh Senedd 2026 voting quiz — my best match is ${w.name} at ${w.pct}%! Find your match: ${location.href}`;
+  if(navigator.share){
+    navigator.share({title:'Welsh Senedd 2026 — My Party Match',text,url:location.href});
+  } else {
+    window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text),'_blank');
+  }
+}
+
+function doCopy(){
+  const w=window._winner;
+  const text=w?`My Welsh Senedd 2026 match: ${w.name} (${w.pct}%). Take the quiz: ${location.href}`:location.href;
+  const btn=document.getElementById('copyBtn');
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent='Copied ✓';
+    setTimeout(()=>btn.textContent='Copy link',2000);
+  }).catch(()=>{
+    const t=document.createElement('textarea');
+    t.value=text; document.body.appendChild(t); t.select();
+    document.execCommand('copy'); document.body.removeChild(t);
+    btn.textContent='Copied ✓';
+    setTimeout(()=>btn.textContent='Copy link',2000);
+  });
+}
+
+function restart(){
+  document.getElementById('pf').style.width='0%';
+  screen('start');
+}
+</script>
+</body>
+</html>
