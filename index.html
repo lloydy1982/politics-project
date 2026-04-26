@@ -19,6 +19,7 @@
 <meta name="twitter:image" content="https://votewise.info/og-image.png">
 <meta name="twitter:site" content="@votewise">
 <meta name="robots" content="index, follow">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -55,11 +56,15 @@ body{font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;b
 .prog-fill{height:100%;background:var(--accent);transition:width .35s ease;width:0%}
 
 /* Header */
-.hdr{background:#fff;color:var(--ink);padding:20px 20px 18px;border-bottom:1px solid var(--border)}
-.hdr-inner{max-width:580px;margin:0 auto;display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.hdr-brand{font-family:'Inter',system-ui,sans-serif;font-size:1.35rem;font-weight:700;letter-spacing:-.03em;color:var(--ink);line-height:1}
-.hdr-brand span{color:var(--accent)}
+.hdr{background:#fff;color:var(--ink);padding:18px 20px 16px;border-bottom:1px solid var(--border)}
+.hdr-inner{max-width:580px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.hdr-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;flex-shrink:0}
+.brand-mark{display:block;flex-shrink:0}
+.brand-text{display:flex;align-items:baseline;font-family:'Inter',system-ui,sans-serif;font-size:1.05rem;letter-spacing:.32em;line-height:1}
+.brand-vote{font-weight:800;color:#1a2332}
+.brand-wise{font-weight:300;color:#0d9488}
 .hdr-sub{font-size:.72rem;color:var(--faint);white-space:nowrap}
+@media(max-width:560px){.hdr-inner{justify-content:center}.hdr-sub{display:none}}
 
 /* Disclaimer */
 .disc-card{background:var(--surface);padding:32px 0;min-height:calc(100vh - 160px);display:flex;flex-direction:column}
@@ -170,7 +175,13 @@ body{font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;b
 
 <header class="hdr">
   <div class="hdr-inner">
-    <div class="hdr-brand">Vote<span>Wise</span></div>
+    <a class="hdr-brand" href="/">
+      <svg class="brand-mark" viewBox="0 0 44 44" width="36" height="36" aria-hidden="true">
+        <circle cx="22" cy="22" r="22" fill="#0d9488"/>
+        <path d="M 10 22 L 18 31 L 35 13" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <span class="brand-text"><span class="brand-vote">VOTE</span><span class="brand-wise">WISE</span></span>
+    </a>
     <div class="hdr-sub">Wales &nbsp;·&nbsp; Senedd Election 2026</div>
   </div>
 </header>
