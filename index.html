@@ -4,13 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Answer 12 questions on Welsh policy and find out which party best matches your views ahead of the 2026 Senedd election.">
-<title>Welsh Senedd 2026 — Find Your Party Match</title>
-<meta property="og:title" content="Welsh Senedd 2026 — Find Your Party Match">
+<title>VoteWise — Welsh Senedd 2026</title>
+<meta property="og:title" content="VoteWise — Welsh Senedd 2026">
 <meta property="og:description" content="Answer 12 questions on Welsh policy and find out which party best matches your views ahead of the 2026 Senedd election.">
 <meta property="og:image" content="og-image.png">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="og-image.png">
+<script src="https://cdn.counter.dev/script.js" data-id="9cbe9e2c-a386-4ca2-bb1c-f7a81ed420fb" data-utcoffset="1"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -26,11 +27,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .prog-fill{height:100%;background:var(--accent);transition:width .35s ease;width:0%}
 
 /* Header */
-.hdr{background:#111;color:#fff;padding:28px 20px 24px;border-bottom:3px solid var(--accent)}
-.hdr-inner{max-width:580px;margin:0 auto}
-.hdr-eyebrow{font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
-.hdr h1{font-family:Georgia,'Times New Roman',serif;font-size:1.6rem;font-weight:700;line-height:1.2;letter-spacing:-.01em}
-.hdr p{font-size:.78rem;color:rgba(255,255,255,.5);margin-top:6px}
+.hdr{background:#111;color:#fff;padding:22px 20px 20px;border-bottom:3px solid var(--accent)}
+.hdr-inner{max-width:580px;margin:0 auto;display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.hdr-brand{font-family:Georgia,'Times New Roman',serif;font-size:1.55rem;font-weight:700;letter-spacing:-.02em;color:#fff;line-height:1}
+.hdr-brand span{color:var(--accent)}
+.hdr-sub{font-size:.72rem;color:rgba(255,255,255,.45);white-space:nowrap}
+
+/* Disclaimer */
+.disc-card{background:var(--surface);border:1px solid var(--border);padding:32px 28px;min-height:calc(100vh - 160px);display:flex;flex-direction:column}
+.disc-tag{font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin-bottom:16px;padding-left:9px;border-left:2px solid var(--accent)}
+.disc-title{font-family:Georgia,'Times New Roman',serif;font-size:1.4rem;font-weight:700;color:var(--ink);margin-bottom:22px;line-height:1.3}
+.disc-list{list-style:none;padding:0;margin:0 0 auto;flex:1}
+.disc-list li{font-size:.875rem;color:var(--muted);line-height:1.65;padding:11px 0 11px 20px;border-bottom:1px solid var(--border);position:relative}
+.disc-list li:first-child{border-top:1px solid var(--border)}
+.disc-list li::before{content:'';position:absolute;left:0;top:19px;width:5px;height:5px;background:var(--accent);border-radius:50%}
+.disc-cta{margin-top:28px}
 
 /* Layout */
 .wrap{max-width:580px;margin:0 auto;padding:24px 16px 56px}
@@ -104,7 +115,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .disclaimer{font-size:.69rem;color:var(--faint);text-align:center;margin-top:14px;line-height:1.75;padding:0 6px}
 
 @keyframes fadein{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
-.screen.active .q-card,.screen.active .start-card{animation:fadein .22s ease}
+.screen.active .q-card,.screen.active .start-card,.screen.active .disc-card{animation:fadein .22s ease}
 @media(max-width:380px){.runners{grid-template-columns:1fr}.hdr h1{font-size:1.3rem}}
 </style>
 </head>
@@ -114,16 +125,35 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 
 <header class="hdr">
   <div class="hdr-inner">
-    <div class="hdr-eyebrow">Wales &nbsp;·&nbsp; Senedd Election 2026</div>
-    <h1>Find Your Party Match</h1>
-    <p>12 questions across Welsh policy &nbsp;·&nbsp; 6 parties compared &nbsp;·&nbsp; ~2 minutes</p>
+    <div class="hdr-brand">Vote<span>Wise</span></div>
+    <div class="hdr-sub">Wales &nbsp;·&nbsp; Senedd Election 2026</div>
   </div>
 </header>
 
 <main class="wrap">
 
+  <!-- DISCLAIMER -->
+  <div class="screen active" id="s-disclaimer">
+    <div class="disc-card">
+      <div class="disc-tag">Before you begin</div>
+      <h2 class="disc-title">A few things to know about VoteWise</h2>
+      <ul class="disc-list">
+        <li>VoteWise is an independent, unofficial voter guide — it is not affiliated with, endorsed by, or connected to any political party, electoral commission, or government body.</li>
+        <li>This tool was built with the assistance of AI. Policy positions are based on publicly available manifesto information but may not capture every nuance — always read the official party manifestos before you vote.</li>
+        <li>This is a guide only — voting is personal and VoteWise is designed to help you explore policies, not tell you how to vote.</li>
+        <li>Results are indicative only, based on how closely your answers align with known party positions.</li>
+        <li>VoteWise is currently only available in English — we recognise this is a limitation and apologise to those who would prefer to use it in other languages.</li>
+        <li>No personal data is collected — your answers never leave your browser.</li>
+        <li>VoteWise is designed to work across multiple elections over time — always check that the election shown is the one you are voting in.</li>
+      </ul>
+      <div class="disc-cta">
+        <button class="btn btn-red" onclick="screen('start')">Explore the policies →</button>
+      </div>
+    </div>
+  </div>
+
   <!-- START -->
-  <div class="screen active" id="s-start">
+  <div class="screen" id="s-start">
     <div class="start-card">
       <h2>Which party speaks for you?</h2>
       <p class="lead">Answer 12 questions on Welsh policy issues and find out which party best matches your views ahead of the 2026 Senedd election.</p>
@@ -607,6 +637,7 @@ function pushUrlState(){
   try{
     const r=new URLSearchParams(location.search).get('r');
     if(!r||!/^[0-3]{12}$/.test(r))return;
+    // Skip disclaimer when loading shared results directly
     cur=0;ans=[];sc={};
     P.forEach(p=>sc[p.id]=0);
     r.split('').forEach((c,i)=>{
