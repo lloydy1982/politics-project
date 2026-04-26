@@ -3,8 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Find out which Welsh Senedd party best matches your views ahead of the 2026 election">
+<meta name="description" content="Answer 12 questions on Welsh policy and find out which party best matches your views ahead of the 2026 Senedd election.">
 <title>Welsh Senedd 2026 — Find Your Party Match</title>
+<meta property="og:title" content="Welsh Senedd 2026 — Find Your Party Match">
+<meta property="og:description" content="Answer 12 questions on Welsh policy and find out which party best matches your views ahead of the 2026 Senedd election.">
+<meta property="og:image" content="og-image.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="og-image.png">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -180,7 +186,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 const P = [
   {
     id:'lab', name:'Welsh Labour', short:'Labour', color:'#E4003B', initials:'LAB',
-    logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Labour_Party_%28UK%29_logo.svg/200px-Labour_Party_%28UK%29_logo.svg.png',
+    logo:'logos/lab.svg',
     why:{
       nhs:'a well-funded, fully public NHS',
       education:'investment in schools and significantly higher teacher pay',
@@ -198,16 +204,16 @@ const P = [
   },
   {
     id:'con', name:'Welsh Conservatives', short:'Conservatives', color:'#0087DC', initials:'CON',
-    logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Conservative_Party_%28UK%29_logo.svg/200px-Conservative_Party_%28UK%29_logo.svg.png',
+    logo:'logos/con.svg',
     why:{
-      nhs:'private sector involvement to cut NHS waiting lists',
+      nhs:'more beds, new surgical and diagnostic hubs, and tougher performance standards to cut waiting times',
       education:'higher standards through accountability and school choice',
       housing:'cutting planning red tape so the market can build more homes',
       climate:'net zero at a pace that protects jobs and energy security',
       economy:'lower taxes and less red tape to attract business investment',
       devolution:'a strong Union with no further transfer of powers from Westminster',
       transport:'road improvements and ending schemes that penalise drivers',
-      socialcare:'reform through private sector competition to drive up quality',
+      socialcare:'reforming the care funding system with an independent commission for long-term sustainability',
       policing:'more officers on the streets and tougher sentences',
       agriculture:'scrapping EU-derived farming rules to free up Welsh farmers',
       energy:'North Sea gas and new nuclear for energy independence',
@@ -216,7 +222,7 @@ const P = [
   },
   {
     id:'pc', name:'Plaid Cymru', short:'Plaid', color:'#3F8428', initials:'PC',
-    logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Plaid_Cymru_logo.svg/200px-Plaid_Cymru_logo.svg.png',
+    logo:'logos/pc.svg',
     why:{
       nhs:'a fully public NHS with significant extra investment',
       education:'expanding Welsh-medium education and paying teachers much more',
@@ -234,25 +240,25 @@ const P = [
   },
   {
     id:'ld', name:'Liberal Democrats', short:'Lib Dems', color:'#FAA61A', initials:'LD',
-    logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Liberal_Democrats_logo.svg/200px-Liberal_Democrats_logo.svg.png',
+    logo:'logos/ld.svg',
     why:{
-      nhs:'higher NHS funding with a strong focus on mental health',
+      nhs:'higher NHS funding with a strong focus on mental health and cutting corridor care',
       education:'more money per pupil and better mental health support in schools',
       housing:'reforming the rental market and building genuinely affordable homes',
       climate:'ambitious but balanced climate action with a green jobs programme',
       economy:'skills investment, green industries and support for small business',
       devolution:'a federal UK where Wales, Scotland and England have equal powers',
       transport:'significant investment in buses, rail and active travel',
-      socialcare:'free personal care for all who need it, funded through taxation',
+      socialcare:'better funded social care, more care workers and a long-term plan to meet care needs',
       policing:'mental health and drug treatment to tackle the root causes of crime',
       agriculture:'linking farm payments to environmental and biodiversity outcomes',
-      energy:'a strong renewable energy transition with energy efficiency homes',
-      language:'supporting Welsh language while protecting English-speaking communities'
+      energy:'investing in tidal, hydro and offshore wind with a ten-year home insulation programme',
+      language:'supporting Welsh culture and language as part of a stronger Wales'
     }
   },
   {
     id:'grn', name:'Green Party', short:'Greens', color:'#00B140', initials:'GRN',
-    logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Green_Party_of_England_and_Wales_logo.svg/200px-Green_Party_of_England_and_Wales_logo.svg.png',
+    logo:'logos/grn.svg',
     why:{
       nhs:'a fully public NHS with preventative health at its core',
       education:'less high-stakes testing, more mental health support and creativity',
@@ -270,20 +276,20 @@ const P = [
   },
   {
     id:'ref', name:'Reform UK', short:'Reform', color:'#12B6CF', initials:'REF',
-    logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Reform_UK_party_logo_%282024%29.svg/200px-Reform_UK_party_logo_%282024%29.svg.png',
+    logo:'logos/ref.svg',
     why:{
-      nhs:'cutting NHS bureaucracy and allowing private sector competition',
+      nhs:'cutting NHS waiting lists fast with new diagnostic centres and stripping out management bureaucracy',
       education:'returning to traditional core subjects and ending ideological teaching',
       housing:'scrapping regulations that push up costs and letting the market build',
       climate:'scrapping net zero targets to protect jobs and cut household energy bills',
       economy:'low taxes, minimal regulation and a pro-growth environment',
-      devolution:'reducing Senedd powers and returning control to Westminster',
+      devolution:'a smaller Senedd with fewer politicians and no further devolution of powers',
       transport:'expanding roads and ending charges that punish ordinary drivers',
       socialcare:'reducing state involvement and supporting family-based care',
       policing:'zero tolerance policing and strict enforcement with no excuses',
       agriculture:'scrapping EU-derived farming red tape and letting Welsh farmers farm',
       energy:'domestic oil and gas, opposing subsidised wind farm expansion',
-      language:'English as the primary language of public services in Wales'
+      language:'reviewing Welsh language spending for value and ensuring services work for all Welsh people'
     }
   }
 ];
@@ -394,8 +400,8 @@ const Q = [
     area:'Energy', id:'energy',
     q:'Wales should power itself through...',
     opts:[
-      {t:'100% renewables — wind, solar and tidal — with no new nuclear power stations or fossil fuel projects', s:{lab:0,con:0,pc:2,ld:1,grn:3,ref:0}},
-      {t:'A mix of renewables and new nuclear for clean, secure and affordable energy',                          s:{lab:3,con:2,pc:2,ld:3,grn:0,ref:0}},
+      {t:'100% renewables — wind, solar and tidal — with no new nuclear power stations or fossil fuel projects', s:{lab:0,con:0,pc:2,ld:2,grn:3,ref:0}},
+      {t:'A mix of renewables and new nuclear for clean, secure and affordable energy',                          s:{lab:3,con:2,pc:2,ld:0,grn:0,ref:0}},
       {t:'New nuclear at Wylfa and Trawsfynydd alongside renewables — no new industrial-scale wind or solar',   s:{lab:0,con:3,pc:0,ld:0,grn:0,ref:2}},
       {t:'Scrapping wind farm subsidies, cutting green levies and using our own gas',     s:{lab:0,con:1,pc:0,ld:0,grn:0,ref:3}}
     ]
@@ -405,7 +411,7 @@ const Q = [
     q:'Welsh language policy in public life should...',
     opts:[
       {t:'Pursue full bilingualism — Welsh equal to English across all public services',  s:{lab:1,con:0,pc:3,ld:1,grn:2,ref:0}},
-      {t:'Support the one million speakers target and grow the language, keeping it voluntary', s:{lab:3,con:1,pc:2,ld:2,grn:2,ref:0}},
+      {t:'Support the one million speakers target and grow the language, keeping it voluntary', s:{lab:3,con:1,pc:2,ld:1,grn:2,ref:0}},
       {t:'Maintain current support but ensure English speakers are never disadvantaged',  s:{lab:1,con:3,pc:0,ld:2,grn:1,ref:1}},
       {t:'Review Welsh language spending for value — public services must work for all, Welsh and English speakers alike', s:{lab:0,con:1,pc:0,ld:0,grn:0,ref:3}}
     ]
@@ -438,26 +444,37 @@ function renderQ(i){
   document.getElementById('qNum').textContent=`${i+1} of ${Q.length}`;
   document.getElementById('qText').textContent=q.q;
   const el=document.getElementById('qOpts');
+  el.setAttribute('role','radiogroup');
+  el.setAttribute('aria-labelledby','qText');
   el.innerHTML='';
   q.opts.forEach((o,j)=>{
     const b=document.createElement('button');
-    b.className='opt'; b.textContent=o.t;
+    b.className='opt';
+    b.textContent=o.t;
+    b.setAttribute('role','radio');
+    b.setAttribute('aria-checked','false');
     b.onclick=()=>pick(j);
+    b.addEventListener('keydown',e=>{
+      const opts=[...el.querySelectorAll('[role="radio"]')];
+      if(e.key==='ArrowDown'||e.key==='ArrowRight'){e.preventDefault();opts[(j+1)%opts.length].focus();}
+      else if(e.key==='ArrowUp'||e.key==='ArrowLeft'){e.preventDefault();opts[(j-1+opts.length)%opts.length].focus();}
+    });
     el.appendChild(b);
   });
   setProgress(i,Q.length);
 }
 
 function pick(j){
-  document.querySelectorAll('.opt').forEach(b=>b.classList.remove('sel'));
-  document.querySelectorAll('.opt')[j].classList.add('sel');
+  const opts=[...document.querySelectorAll('.opt')];
+  opts.forEach((b,k)=>{b.classList.remove('sel');b.setAttribute('aria-checked',k===j?'true':'false');});
+  opts[j].classList.add('sel');
   setTimeout(()=>{
     const q=Q[cur];
     ans.push({qid:q.id,j});
     Object.entries(q.opts[j].s).forEach(([id,pts])=>sc[id]=(sc[id]||0)+pts);
     cur++;
     if(cur<Q.length){ renderQ(cur); }
-    else{ setProgress(Q.length,Q.length); buildResults(); screen('res'); }
+    else{ setProgress(Q.length,Q.length); buildResults(); screen('res'); pushUrlState(); }
   },240);
 }
 
@@ -498,7 +515,7 @@ function buildResults(){
       <div class="run-badge">${i===0?'2nd place':'3rd place'}</div>
       ${logoHtml(p,'run-logo-img','run-logo-fb')}
       <div class="run-name">${p.name}</div>
-      <div class="run-pct" style="color:${p.color}">${p.pct}%</div>
+      <div class="run-pct">${p.pct}%</div>
     </div>`).join('');
 
   // All rows
@@ -509,7 +526,7 @@ function buildResults(){
         <div class="res-pname">${p.name}</div>
         <div class="res-track"><div class="res-bar" style="background:${p.color}" data-w="${p.pct}"></div></div>
       </div>
-      <div class="res-pct" style="color:${p.color}">${p.pct}%</div>
+      <div class="res-pct">${p.pct}%</div>
     </div>`).join('');
 
   requestAnimationFrame(()=>{
@@ -573,8 +590,36 @@ function doCopy(){
 
 function restart(){
   document.getElementById('pf').style.width='0%';
+  try{ history.replaceState(null,'',location.pathname); }catch(e){}
   screen('start');
 }
+
+// ── URL STATE ────────────────────────────────────────────────────────────────
+function pushUrlState(){
+  try{
+    const u=new URL(location.href);
+    u.searchParams.set('r',ans.map(a=>a.j).join(''));
+    history.replaceState(null,'',u);
+  }catch(e){}
+}
+
+(function loadFromUrl(){
+  try{
+    const r=new URLSearchParams(location.search).get('r');
+    if(!r||!/^[0-3]{12}$/.test(r))return;
+    cur=0;ans=[];sc={};
+    P.forEach(p=>sc[p.id]=0);
+    r.split('').forEach((c,i)=>{
+      const j=parseInt(c);
+      ans.push({qid:Q[i].id,j});
+      Object.entries(Q[i].opts[j].s).forEach(([id,pts])=>sc[id]=(sc[id]||0)+pts);
+    });
+    cur=Q.length;
+    setProgress(Q.length,Q.length);
+    buildResults();
+    screen('res');
+  }catch(e){}
+})();
 </script>
 </body>
 </html>
