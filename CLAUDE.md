@@ -10,16 +10,18 @@ Private GitHub repo: `lloydy1982/politics-project`
 
 ## What has been built
 
-### Welsh Senedd 2026 Voting Guide (`index.html`)
+### VoteWise — Welsh Senedd 2026 Voting Guide (`index.html`)
 
-A single-page, zero-dependency party-matching quiz for the Welsh Senedd 2026 election.
+A single-page, zero-dependency party-matching quiz branded **VoteWise**, built for the Welsh Senedd 2026 election.
 
 **How it works:**
+- Full-screen disclaimer/landing screen shown on first load (skipped when loading a shared URL)
 - 12 questions across key Welsh policy areas
 - Each answer option has a hidden score object mapping party IDs to points (0–3)
 - After all 12 answers, each party's score is expressed as a percentage of their maximum possible score
 - Results show: winner card with match %, 2nd and 3rd place, all 6 parties ranked with animated bar chart
 - Share via Web Share API (mobile) or Twitter fallback; copy-to-clipboard with fallback
+- URL state: answers encoded as a 12-char `?r=` query param — results are directly shareable and bookmarkable
 
 **Parties covered:** Welsh Labour, Welsh Conservatives, Plaid Cymru, Liberal Democrats, Green Party, Reform UK
 
@@ -27,9 +29,17 @@ A single-page, zero-dependency party-matching quiz for the Welsh Senedd 2026 ele
 
 **Tech stack:** Pure HTML/CSS/JS — no build system, no dependencies, works offline
 
-**Design:** Editorial/professional style inspired by gov.uk and MIT Technology Review. Warm off-white background (`#f5f4f0`), dark masthead, Georgia serif headings, deep red accent (`#8b1a1a`), flat cards with minimal border radius, thin 2px progress bar.
+**Design:** Clean editorial style. White (`#ffffff`) background, dark slate (`#1a2332`) text, mid-blue (`#2563eb`) accent on buttons/highlights, light grey (`#f8f9fa`) section backgrounds, `#e5e7eb` borders. Inter (Google Fonts) throughout. Flat cards, minimal border radius, 3px blue progress bar.
 
-**Content accuracy:** All 48 answer option/party pairings were audited against the six official Welsh Senedd 2026 manifestos (April 2026). 14 text corrections and 2 scoring corrections were applied. Sources used: official manifesto pages, ITV Wales, LabourList, State of Wales, CIEEM, Friends of the Earth Cymru, Will Hayward Wales newsletter.
+**Content accuracy:** All 48 answer option/party pairings were audited against the six official Welsh Senedd 2026 manifestos (April 2026). 14 text corrections and multiple scoring corrections were applied. Sources: official manifesto pages, ITV Wales, LabourList, State of Wales, CIEEM, Friends of the Earth Cymru, Will Hayward Wales newsletter. Lib Dem nuclear and Welsh language positions were resolved against available sources.
+
+**Analytics:** Anonymous usage tracking via Counter.dev (script in `<head>`, no personal data).
+
+**Logos:** Local SVG wordmarks in `logos/` (lab.svg, con.svg, pc.svg, ld.svg, grn.svg, ref.svg) — no external dependencies.
+
+**Social sharing:** `og-image.png` (1200×630) in project root — matches current blue/white design, includes illustrative party result bars.
+
+**Accessibility:** Answer options use `role="radio"`, `aria-checked`, and arrow-key navigation. Options grouped with `role="radiogroup"`.
 
 ## No build system
 
@@ -38,23 +48,18 @@ No package manager, bundler, test runner, or linter is set up yet. Add a Command
 ## What still needs to be done
 
 ### Content
-- [ ] Verify Lib Dem Welsh language policy (their manifesto PDF was not fully parsed — Q12-B and Q12-C placements for LD are unconfirmed)
-- [ ] Verify Lib Dem nuclear/energy policy (Q11-B nuclear support for LD is unconfirmed from available sources)
+- [ ] Verify Lib Dem Welsh language policy (Q12-B and Q12-C placements for LD are unconfirmed — manifesto PDF was not fully parsed)
 - [ ] Consider adding a "why" explanation card per question on the results screen showing which parties aligned with the user's chosen answer
-- [ ] Review whether the quiz needs Welsh-language (`cy`) version
+- [ ] Review whether the quiz needs a Welsh-language (`cy`) version
 
 ### Design / UX
-- [ ] Party logos: currently loaded from Wikimedia URLs — consider hosting locally to avoid external dependency and logo breakage
-- [ ] Mobile test: verify layout on small screens (380px breakpoint is coded but untested on real devices)
-- [ ] Accessibility: add `aria-pressed` or `role="radio"` to answer option buttons; check colour contrast on party-coloured percentage figures
-- [ ] Add a meta `og:image` for richer social sharing previews
+- [ ] Mobile test: verify layout on real small-screen devices (380px breakpoint is coded but untested on hardware)
+- [ ] Check colour contrast on party-coloured percentage figures in results (WCAG AA)
 
 ### Features
-- [ ] URL state: encode answers in the URL query string so results are shareable/bookmarkable directly
 - [ ] Consider adding a brief policy explanation beneath each question (hidden by default, expandable)
-- [ ] Analytics / usage tracking (privacy-respecting, e.g. Plausible or simple server-side counter) if the site is hosted publicly
 
 ### Infrastructure
-- [ ] Decide on hosting (GitHub Pages is simplest given the repo setup)
+- [ ] Decide on hosting — GitHub Pages requires the repo to be public (currently private); alternatives: Netlify drop, Vercel, or upgrade GitHub plan
 - [ ] Add a custom domain if publishing publicly
-- [ ] Set up a linter / formatter (Prettier) once the project grows beyond a single file
+- [ ] Set up Prettier once the project grows beyond a single file
