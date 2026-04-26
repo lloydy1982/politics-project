@@ -119,6 +119,16 @@ body{font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;b
 .restart:hover{color:var(--ink)}
 .disclaimer{font-size:.69rem;color:var(--faint);text-align:center;margin-top:14px;line-height:1.75;padding:0 6px}
 
+/* Manifesto links */
+.mfst-box{background:var(--surface);border:1px solid var(--border);overflow:hidden;margin-bottom:12px}
+.mfst-hdr{padding:10px 16px;font-size:.63rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);border-bottom:1px solid var(--border);background:var(--section)}
+.mfst-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.mfst-link{display:flex;align-items:center;gap:8px;padding:11px 14px;font-size:.78rem;font-weight:600;text-decoration:none;color:var(--ink);border-bottom:1px solid var(--border);border-right:1px solid var(--border);transition:background .12s}
+.mfst-link:hover{background:var(--section)}
+.mfst-link:nth-child(even){border-right:none}
+.mfst-link:nth-last-child(-n+2){border-bottom:none}
+.mfst-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
 @keyframes fadein{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 .screen.active .q-card,.screen.active .start-card,.screen.active .disc-card{animation:fadein .22s ease}
 @media(max-width:380px){.runners{grid-template-columns:1fr}.hdr h1{font-size:1.3rem}}
@@ -207,6 +217,10 @@ body{font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;b
       <button class="btn btn-red" onclick="doShare()">Share results</button>
       <button class="btn btn-ghost" id="copyBtn" onclick="doCopy()">Copy link</button>
     </div>
+    <div class="mfst-box">
+      <div class="mfst-hdr">Read the manifestos</div>
+      <div class="mfst-grid" id="mfstLinks"></div>
+    </div>
     <button class="restart" onclick="restart()">← Start over</button>
     <p class="disclaimer">
       Party positions reflect publicly available manifestos and policy statements as of early 2026.
@@ -222,7 +236,7 @@ body{font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;b
 const P = [
   {
     id:'lab', name:'Welsh Labour', short:'Labour', color:'#E4003B', initials:'LAB',
-    logo:'logos/lab.svg',
+    logo:'logos/lab.svg', url:'https://labour.wales',
     why:{
       nhs:'a well-funded, fully public NHS',
       education:'investment in schools and significantly higher teacher pay',
@@ -240,7 +254,7 @@ const P = [
   },
   {
     id:'con', name:'Welsh Conservatives', short:'Conservatives', color:'#0087DC', initials:'CON',
-    logo:'logos/con.svg',
+    logo:'logos/con.svg', url:'https://www.conservatives.wales',
     why:{
       nhs:'more beds, new surgical and diagnostic hubs, and tougher performance standards to cut waiting times',
       education:'higher standards through accountability and school choice',
@@ -258,7 +272,7 @@ const P = [
   },
   {
     id:'pc', name:'Plaid Cymru', short:'Plaid', color:'#3F8428', initials:'PC',
-    logo:'logos/pc.svg',
+    logo:'logos/pc.svg', url:'https://www.plaid.cymru',
     why:{
       nhs:'a fully public NHS with significant extra investment',
       education:'expanding Welsh-medium education and paying teachers much more',
@@ -276,7 +290,7 @@ const P = [
   },
   {
     id:'ld', name:'Liberal Democrats', short:'Lib Dems', color:'#FAA61A', initials:'LD',
-    logo:'logos/ld.svg',
+    logo:'logos/ld.svg', url:'https://www.welshlibdems.wales',
     why:{
       nhs:'higher NHS funding with a strong focus on mental health and cutting corridor care',
       education:'more money per pupil and better mental health support in schools',
@@ -294,7 +308,7 @@ const P = [
   },
   {
     id:'grn', name:'Green Party', short:'Greens', color:'#00B140', initials:'GRN',
-    logo:'logos/grn.svg',
+    logo:'logos/grn.svg', url:'https://walesgreenparty.co.uk',
     why:{
       nhs:'a fully public NHS with preventative health at its core',
       education:'less high-stakes testing, more mental health support and creativity',
@@ -312,7 +326,7 @@ const P = [
   },
   {
     id:'ref', name:'Reform UK', short:'Reform', color:'#12B6CF', initials:'REF',
-    logo:'logos/ref.svg',
+    logo:'logos/ref.svg', url:'https://www.reformparty.uk',
     why:{
       nhs:'cutting NHS waiting lists fast with new diagnostic centres and stripping out management bureaucracy',
       education:'returning to traditional core subjects and ending ideological teaching',
@@ -568,6 +582,12 @@ function buildResults(){
   requestAnimationFrame(()=>{
     document.querySelectorAll('.res-bar').forEach(b=>b.style.width=b.dataset.w+'%');
   });
+
+  document.getElementById('mfstLinks').innerHTML=P.map(p=>
+    `<a class="mfst-link" href="${p.url}" target="_blank" rel="noopener noreferrer">
+      <span class="mfst-dot" style="background:${p.color}"></span>${p.name}
+    </a>`
+  ).join('');
 }
 
 function logoHtml(p,imgCls,fbCls){
