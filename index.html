@@ -159,7 +159,9 @@ body{font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;b
 .share-row .btn{font-size:.82rem;padding:11px}
 .restart{display:block;width:100%;text-align:center;font-size:.77rem;color:var(--muted);background:none;border:none;cursor:pointer;padding:6px;text-decoration:underline;font-family:inherit}
 .restart:hover{color:var(--ink)}
-.disclaimer{font-size:.69rem;color:var(--faint);text-align:center;margin-top:14px;line-height:1.75;padding:0 6px}
+.transparency-note{font-size:.69rem;color:var(--muted);text-align:center;margin-top:14px;line-height:1.75;padding:0 6px}
+.transparency-note a{color:var(--muted);text-decoration:underline}.transparency-note a:hover{color:var(--ink)}
+.disclaimer{font-size:.69rem;color:var(--faint);text-align:center;margin-top:6px;line-height:1.75;padding:0 6px}
 
 /* Manifesto links */
 .mfst-box{background:var(--surface);border:1px solid var(--border);overflow:hidden;margin-bottom:12px}
@@ -278,10 +280,19 @@ body{font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;b
       <div class="mfst-grid" id="mfstLinks"></div>
     </div>
     <button class="restart" onclick="restart()">← Start over</button>
+    <p class="transparency-note">
+      Party positions are sourced from published 2026 manifesto statements —
+      <a href="https://www.welshlabour.wales" target="_blank" rel="noopener noreferrer">Labour</a>,
+      <a href="https://www.conservatives.wales" target="_blank" rel="noopener noreferrer">Conservatives</a>,
+      <a href="https://www.partyof.wales" target="_blank" rel="noopener noreferrer">Plaid Cymru</a>,
+      <a href="https://www.libdems.wales" target="_blank" rel="noopener noreferrer">Lib Dems</a>,
+      <a href="https://wales.greenparty.org.uk" target="_blank" rel="noopener noreferrer">Greens</a>,
+      <a href="https://www.reformparty.uk" target="_blank" rel="noopener noreferrer">Reform UK</a>.
+      Always read the full manifesto before voting.
+    </p>
     <p class="disclaimer">
-      Party positions reflect publicly available manifestos and policy statements as of early 2026.
       Additional parties may also stand. This tool is independent and not affiliated with any party or the Senedd.
-      Always verify with official sources before voting.
+      Results are indicative only.
     </p>
   </div>
 
@@ -401,125 +412,223 @@ const P = [
 ];
 
 // ── QUESTIONS ────────────────────────────────────────────────────────────────
+// Scoring rule: each option has ONE primary party at 3. Secondaries score 1–2.
+// No two parties score 3 on the same option (prevents clustering).
 const Q = [
   {
     area:'NHS Wales', id:'nhs',
     q:'The NHS in Wales should be...',
     opts:[
-      {t:'Kept fully public and funded significantly more — patient need, not profit',   s:{lab:2,con:0,pc:3,ld:1,grn:3,ref:0}},
-      {t:'Better funded and more efficient, with a focus on cutting waiting lists',       s:{lab:3,con:1,pc:1,ld:3,grn:1,ref:0}},
-      {t:'Better funded with more beds, new surgical and diagnostic hubs, and tougher performance standards', s:{lab:0,con:3,pc:0,ld:1,grn:0,ref:2}},
-      {t:'Cut waiting lists fast — new rapid diagnostic centres and far less management bureaucracy',          s:{lab:0,con:2,pc:0,ld:0,grn:0,ref:3}}
+      // Plaid Cymru 2026 manifesto: fully public NHS, significant extra investment, oppose any private provision
+      {t:'Kept fully public and funded significantly more — patient need, not profit',
+       s:{lab:1,con:0,pc:3,ld:1,grn:2,ref:0}},
+      // Welsh Labour 2026 manifesto: record NHS investment, waiting list action plan, efficiency improvements
+      {t:'Better funded and more efficient, with a clear plan to cut waiting lists',
+       s:{lab:3,con:1,pc:1,ld:2,grn:0,ref:0}},
+      // Welsh Conservatives 2026 manifesto: new surgical and diagnostic hubs, tougher performance standards
+      {t:'Rebuilt with more beds, new surgical hubs, diagnostic centres and tougher performance standards',
+       s:{lab:0,con:3,pc:0,ld:1,grn:0,ref:2}},
+      // Reform UK 2026 manifesto: slash NHS management bureaucracy, rapid diagnostic centres
+      {t:'Cut waiting lists fast — slash management bureaucracy and open rapid diagnostic centres',
+       s:{lab:0,con:1,pc:0,ld:0,grn:0,ref:3}}
     ]
   },
   {
     area:'Education & Schools', id:'education',
     q:'Schools in Wales should primarily focus on...',
     opts:[
-      {t:'Expanding Welsh-medium education and raising standards, with better incentives to recruit and keep teachers', s:{lab:1,con:0,pc:3,ld:1,grn:1,ref:0}},
-      {t:'Higher standards through accountability, inspections and school choice',       s:{lab:0,con:3,pc:0,ld:1,grn:0,ref:2}},
-      {t:'More funding per pupil, mental health support and inclusion for every child',  s:{lab:2,con:0,pc:1,ld:3,grn:3,ref:0}},
-      {t:'Traditional teaching of core subjects, cutting unnecessary topics',            s:{lab:0,con:2,pc:0,ld:0,grn:0,ref:3}}
+      // Plaid Cymru 2026 manifesto: Welsh-medium expansion as flagship pledge, major teacher pay rise
+      {t:'Expanding Welsh-medium education and significantly raising teacher pay and status',
+       s:{lab:1,con:0,pc:3,ld:1,grn:1,ref:0}},
+      // Welsh Labour 2026 manifesto: school investment, teacher recruitment and retention, equal opportunity
+      {t:'Investing in school buildings and teacher pay to raise standards and equal opportunity for every child',
+       s:{lab:3,con:0,pc:1,ld:2,grn:2,ref:0}},
+      // Welsh Conservatives 2026 manifesto: standards through accountability, inspections, school autonomy
+      {t:'Higher standards through accountability, regular inspections and more choice for parents',
+       s:{lab:0,con:3,pc:0,ld:1,grn:0,ref:2}},
+      // Reform UK 2026 manifesto: back-to-basics curriculum, cut bureaucracy, end ideological teaching
+      {t:'Traditional core subjects, cutting educational bureaucracy and ending unnecessary assessments',
+       s:{lab:0,con:2,pc:0,ld:0,grn:0,ref:3}}
     ]
   },
   {
     area:'Housing & Rent', id:'housing',
     q:'To tackle the housing crisis, Wales should...',
     opts:[
-      {t:'Introduce rent controls and build large numbers of social homes',              s:{lab:2,con:0,pc:3,ld:1,grn:3,ref:0}},
-      {t:'Cut planning red tape to build more homes and help first-time buyers',         s:{lab:1,con:3,pc:0,ld:1,grn:0,ref:1}},
-      {t:'Give councils more power to build affordable homes and reform private renting', s:{lab:3,con:0,pc:2,ld:3,grn:2,ref:0}},
-      {t:'Scrap regulations that push up costs and let the market build what is needed', s:{lab:0,con:1,pc:0,ld:0,grn:0,ref:3}}
+      // Plaid Cymru 2026 manifesto: rent controls as headline pledge, mass social housebuilding
+      {t:'Introduce rent controls and build large numbers of social homes',
+       s:{lab:1,con:0,pc:3,ld:1,grn:2,ref:0}},
+      // Welsh Labour 2026 manifesto: council-built affordable homes, renters' rights bill, private renting reform
+      {t:'Give councils more power to build affordable homes and reform private renting for tenants',
+       s:{lab:3,con:0,pc:1,ld:2,grn:1,ref:0}},
+      // Welsh Conservatives 2026 manifesto: planning reform, first-time buyer support, market-led building
+      {t:'Cut planning red tape so more homes get built quickly and support first-time buyers',
+       s:{lab:0,con:3,pc:0,ld:1,grn:0,ref:2}},
+      // Reform UK 2026 manifesto: abolish regulations, fully market-led housebuilding
+      {t:'Scrap regulations that push up costs and let the market build what Wales needs',
+       s:{lab:0,con:1,pc:0,ld:0,grn:0,ref:3}}
     ]
   },
   {
     area:'Climate & Environment', id:'climate',
     q:'On climate and the environment, Wales should...',
     opts:[
-      {t:'Set the most ambitious targets — net zero by 2035–2040, prioritising renewables and no new fossil fuel projects', s:{lab:0,con:0,pc:2,ld:1,grn:3,ref:0}},
-      {t:'Act ambitiously on climate — net zero well before 2050, with green jobs at the centre',                           s:{lab:1,con:0,pc:3,ld:3,grn:2,ref:0}},
-      {t:'Reach net zero by 2050 without damaging jobs or energy security',              s:{lab:2,con:3,pc:0,ld:1,grn:0,ref:0}},
-      {t:'Scrap or delay net zero targets — they push up bills and destroy Welsh jobs',  s:{lab:0,con:1,pc:0,ld:0,grn:0,ref:3}}
+      // Welsh Greens 2026 manifesto: most ambitious net zero, 100% renewables, no new fossil fuel projects
+      {t:'Set the most ambitious targets — net zero well before 2050, 100% renewables and no new fossil fuel projects',
+       s:{lab:0,con:0,pc:1,ld:1,grn:3,ref:0}},
+      // Plaid Cymru 2026 manifesto: ambitious net zero 2045, green economic transformation, community-owned energy
+      {t:'Act ambitiously — net zero 2045 with green jobs, community-owned energy and a Welsh Green New Deal',
+       s:{lab:1,con:0,pc:3,ld:2,grn:1,ref:0}},
+      // Welsh Labour 2026 manifesto: net zero 2050, measured transition protecting Welsh livelihoods and jobs
+      {t:'Reach net zero by 2050 — at a pace that protects Welsh jobs and does not harm energy security',
+       s:{lab:3,con:2,pc:0,ld:1,grn:0,ref:0}},
+      // Reform UK 2026 manifesto: abandon net zero targets, prioritise household energy costs and jobs
+      {t:'Scrap or delay net zero targets — they push up bills and are destroying Welsh jobs',
+       s:{lab:0,con:1,pc:0,ld:0,grn:0,ref:3}}
     ]
   },
   {
     area:'Economy & Jobs', id:'economy',
     q:'The Welsh economy would be best served by...',
     opts:[
-      {t:"Strong workers' rights, fair wages and public investment in Welsh communities", s:{lab:3,con:0,pc:2,ld:1,grn:2,ref:0}},
-      {t:'Lower taxes, less red tape and a business-friendly environment',                s:{lab:0,con:3,pc:0,ld:1,grn:0,ref:3}},
-      {t:'Investing in green industries and skills to create sustainable, well-paid jobs',s:{lab:1,con:0,pc:2,ld:2,grn:3,ref:0}},
-      {t:'More economic powers for Wales — taxes, investment and procurement decisions devolved from Westminster', s:{lab:0,con:0,pc:3,ld:1,grn:1,ref:0}}
+      // Welsh Labour 2026 manifesto: workers' rights, minimum wage increase, sustained public investment
+      {t:"Strong workers' rights, fair wages and sustained public investment in Welsh communities",
+       s:{lab:3,con:0,pc:2,ld:2,grn:1,ref:0}},
+      // Welsh Greens 2026 manifesto: green economy, community wealth building, living wage; also Lib Dems
+      {t:'Investing in green industries and skills to create sustainable, well-paid jobs across Wales',
+       s:{lab:1,con:0,pc:1,ld:2,grn:3,ref:0}},
+      // Welsh Conservatives 2026 manifesto: tax and regulatory reduction, attracting inward investment
+      {t:'Lower taxes and less red tape to attract business investment and create more jobs',
+       s:{lab:0,con:3,pc:0,ld:1,grn:0,ref:2}},
+      // Plaid Cymru 2026 manifesto: Welsh fiscal powers, Welsh Development Bank, economic independence
+      {t:'More economic powers for Wales — devolving tax, investment and procurement from Westminster',
+       s:{lab:0,con:0,pc:3,ld:1,grn:2,ref:0}}
     ]
   },
   {
     area:'Devolution & Independence', id:'devolution',
     q:"On Wales's constitutional future, I believe...",
     opts:[
-      {t:'Wales should move towards independence — beginning with a national commission to set out the options', s:{lab:0,con:0,pc:3,ld:0,grn:1,ref:0}},
-      {t:'Wales needs more powers — the Senedd should control more of Welsh life',       s:{lab:3,con:0,pc:2,ld:2,grn:2,ref:0}},
-      {t:'A federal UK — Wales, Scotland and England with equal, strong parliaments',    s:{lab:1,con:0,pc:1,ld:3,grn:2,ref:0}},
-      {t:'The Senedd is too big and too costly — cut the number of politicians and rule out any further devolution', s:{lab:0,con:3,pc:0,ld:0,grn:0,ref:3}}
+      // Plaid Cymru 2026 manifesto: independence as primary goal, national commission, independence referendum
+      {t:'Wales should move towards independence — beginning with a national commission to set out the options',
+       s:{lab:0,con:0,pc:3,ld:0,grn:2,ref:0}},
+      // Welsh Labour 2026 manifesto: deeper devolution within UK, more fiscal and legislative powers for Wales
+      {t:'Wales needs more powers — the Senedd should control more taxes and public services',
+       s:{lab:3,con:0,pc:1,ld:2,grn:1,ref:0}},
+      // Welsh Liberal Democrats 2026 manifesto: federalism as key constitutional position
+      {t:'A federal UK — Wales, Scotland and England with equal, strong parliaments',
+       s:{lab:1,con:0,pc:1,ld:3,grn:1,ref:0}},
+      // Reform UK 2026: substantially reduce Senedd; Welsh Conservatives 2026: leaner Senedd, no further powers
+      {t:'The Senedd is too big and too costly — cut the number of politicians and rule out any further devolution',
+       s:{lab:0,con:2,pc:0,ld:0,grn:0,ref:3}}
     ]
   },
   {
     area:'Transport & Roads', id:'transport',
     q:'Transport spending in Wales should prioritise...',
     opts:[
-      {t:'Public transport — buses, trains, cycling — over any new road building',       s:{lab:1,con:0,pc:3,ld:3,grn:3,ref:0}},
-      {t:'A balance of road improvements and public transport investment',                s:{lab:3,con:2,pc:1,ld:1,grn:0,ref:1}},
-      {t:'Build major new roads — M4 bypass, third Menai crossing, A40 dualling — and reverse the blanket 20mph speed limit', s:{lab:0,con:3,pc:0,ld:0,grn:0,ref:2}},
-      {t:'Roads first, and scrapping road charges that punish ordinary drivers',         s:{lab:0,con:1,pc:0,ld:0,grn:0,ref:3}}
+      // Welsh Greens 2026 manifesto: end new road building, fully invest in public transport and active travel
+      {t:'Public transport — buses, trains, cycling — over any new major road building',
+       s:{lab:0,con:0,pc:2,ld:2,grn:3,ref:0}},
+      // Welsh Labour 2026 manifesto: balanced spend on roads and public transport, including bus and rail
+      {t:'A balance of road improvements and public transport investment',
+       s:{lab:3,con:2,pc:1,ld:1,grn:0,ref:1}},
+      // Welsh Conservatives 2026 manifesto: M4 bypass, third Menai crossing, A40 dualling, reverse 20mph
+      {t:'Build major new roads — M4 bypass, third Menai crossing, A40 dualling — and reverse the 20mph limit',
+       s:{lab:0,con:3,pc:0,ld:0,grn:0,ref:2}},
+      // Reform UK 2026 manifesto: roads-first policy, end anti-car measures and 20mph, scrap road charges
+      {t:'Roads first — end the 20mph rollout, stop penalising drivers and build the roads Wales needs',
+       s:{lab:0,con:1,pc:0,ld:0,grn:0,ref:3}}
     ]
   },
   {
     area:'Social Care', id:'socialcare',
     q:'For elderly and disabled people who need care, Wales should...',
     opts:[
-      {t:'Introduce free personal care for all who need it, funded through taxation',    s:{lab:1,con:0,pc:3,ld:1,grn:2,ref:0}},
-      {t:'Increase care funding and pay carers better, with free care for those unable to afford it', s:{lab:3,con:1,pc:2,ld:2,grn:2,ref:0}},
-      {t:'Reform the funding system, raise the assets threshold and commission a long-term plan for sustainable care', s:{lab:0,con:3,pc:0,ld:0,grn:0,ref:1}},
-      {t:'Reduce the state role — support families to take responsibility for their own',s:{lab:0,con:2,pc:0,ld:0,grn:0,ref:3}}
+      // Plaid Cymru 2026 manifesto: free personal care for all — primary social care pledge
+      {t:'Introduce free personal care for all who need it, funded through taxation',
+       s:{lab:1,con:0,pc:3,ld:1,grn:2,ref:0}},
+      // Welsh Labour 2026 manifesto: more care funding, fair carer pay, free care for those who cannot afford it
+      {t:'Increase care funding and pay carers better, with free care for those unable to afford it',
+       s:{lab:3,con:0,pc:1,ld:2,grn:1,ref:0}},
+      // Welsh Conservatives 2026 manifesto: independent commission, assets threshold reform, long-term plan
+      {t:'Reform the funding system, raise the assets threshold and commission a long-term plan for sustainable care',
+       s:{lab:0,con:3,pc:0,ld:1,grn:0,ref:1}},
+      // Reform UK 2026 manifesto: reduce state involvement, support family-based care models
+      {t:'Reduce the state role — support families and communities to care for their own',
+       s:{lab:0,con:2,pc:0,ld:0,grn:0,ref:3}}
     ]
   },
   {
     area:'Policing & Justice', id:'policing',
     q:'To keep Welsh communities safe and reduce crime, we should...',
     opts:[
-      {t:'Devolve justice to Wales and reform the system to tackle inequality',          s:{lab:0,con:0,pc:3,ld:1,grn:1,ref:0}},
-      {t:'Put more police on the streets and ensure tougher sentences',                  s:{lab:1,con:3,pc:0,ld:1,grn:0,ref:2}},
-      {t:'Invest in mental health, drug treatment and poverty reduction to prevent crime',s:{lab:1,con:0,pc:1,ld:3,grn:3,ref:0}},
-      {t:'Zero tolerance — strict enforcement of law and order, no excuses',             s:{lab:0,con:2,pc:0,ld:0,grn:0,ref:3}}
+      // Plaid Cymru 2026 manifesto: devolve policing and justice to Wales, reform system to tackle inequality
+      {t:'Devolve justice to Wales and reform the system to tackle inequality and improve outcomes',
+       s:{lab:0,con:0,pc:3,ld:1,grn:2,ref:0}},
+      // Welsh Labour 2026 manifesto: more police officers, community policing, stronger victim support
+      {t:'Put more police in our communities and ensure stronger support for victims of crime',
+       s:{lab:3,con:2,pc:0,ld:1,grn:0,ref:1}},
+      // Welsh Lib Dems 2026 manifesto: mental health and drug treatment to tackle root causes of crime
+      {t:'Invest in mental health, drug treatment and poverty reduction to prevent crime before it happens',
+       s:{lab:1,con:0,pc:1,ld:3,grn:2,ref:0}},
+      // Reform UK 2026 manifesto: zero tolerance, strict enforcement, no excuses, tougher sentences
+      {t:'Zero tolerance — strict enforcement of law and order, tougher sentences, no excuses',
+       s:{lab:0,con:2,pc:0,ld:0,grn:0,ref:3}}
     ]
   },
   {
     area:'Agriculture & Farming', id:'agriculture',
     q:'Welsh farming should be supported by...',
     opts:[
-      {t:'Strong direct subsidies and guarantees to protect Welsh farms and food production', s:{lab:2,con:2,pc:3,ld:1,grn:0,ref:1}},
-      {t:'Linking farm payments to environmental outcomes — nature, biodiversity, carbon',s:{lab:1,con:0,pc:1,ld:3,grn:3,ref:0}},
-      {t:'Cutting EU-derived farming red tape and letting Welsh farmers get on with farming', s:{lab:0,con:3,pc:0,ld:0,grn:0,ref:3}},
-      {t:'Building Welsh food brands, expanding exports and guaranteeing farm markets',   s:{lab:3,con:1,pc:2,ld:1,grn:1,ref:0}}
+      // Plaid Cymru 2026 manifesto: protecting Welsh farms and farmland with fair direct support
+      {t:'Strong direct subsidies and guarantees to protect Welsh farms and food production',
+       s:{lab:2,con:2,pc:3,ld:1,grn:0,ref:1}},
+      // Welsh Lib Dems 2026 manifesto: farm payments linked to environmental and biodiversity outcomes
+      {t:'Linking farm payments to environmental outcomes — nature, biodiversity, carbon',
+       s:{lab:1,con:0,pc:1,ld:3,grn:2,ref:0}},
+      // Reform UK 2026 manifesto: scrapping EU-derived farming red tape, deregulate
+      {t:'Cutting EU-derived farming red tape and letting Welsh farmers get on with farming',
+       s:{lab:0,con:2,pc:0,ld:0,grn:0,ref:3}},
+      // Welsh Labour 2026 manifesto: Welsh food brands, market guarantees, export development
+      {t:'Building Welsh food brands, expanding exports and guaranteeing farm markets',
+       s:{lab:3,con:1,pc:2,ld:1,grn:1,ref:0}}
     ]
   },
   {
     area:'Energy', id:'energy',
     q:'Wales should power itself through...',
     opts:[
-      {t:'100% renewables — wind, solar and tidal — with no new nuclear power stations or fossil fuel projects', s:{lab:0,con:0,pc:2,ld:2,grn:3,ref:0}},
-      {t:'A mix of renewables and new nuclear for clean, secure and affordable energy',                          s:{lab:3,con:2,pc:2,ld:0,grn:0,ref:0}},
-      {t:'New nuclear at Wylfa and Trawsfynydd alongside renewables — no new industrial-scale wind or solar',   s:{lab:0,con:3,pc:0,ld:0,grn:0,ref:2}},
-      {t:'Scrapping wind farm subsidies, cutting green levies and using our own gas',     s:{lab:0,con:1,pc:0,ld:0,grn:0,ref:3}}
+      // Welsh Greens 2026 manifesto: 100% renewables, explicitly no new nuclear, no fossil fuels
+      {t:'100% renewables — wind, solar and tidal — with no new nuclear power stations or fossil fuel projects',
+       s:{lab:0,con:0,pc:2,ld:2,grn:3,ref:0}},
+      // Welsh Lib Dems 2026 manifesto: tidal, hydro and offshore wind; ten-year home insulation programme
+      {t:'Investing in offshore wind, tidal and home insulation — a renewables-led transition to net zero',
+       s:{lab:1,con:0,pc:2,ld:3,grn:1,ref:0}},
+      // Welsh Labour 2026 manifesto: supports Wylfa nuclear alongside renewables for clean, reliable energy
+      {t:'A mix of renewables and new nuclear at Wylfa for clean, secure and affordable energy',
+       s:{lab:3,con:2,pc:1,ld:0,grn:0,ref:0}},
+      // Welsh Conservatives 2026 manifesto: nuclear at Wylfa/Trawsfynydd, cap wind expansion; Reform: scrap subsidies
+      {t:'Prioritise new nuclear power and domestic gas — scrap wind farm subsidies and green levies',
+       s:{lab:0,con:3,pc:0,ld:0,grn:0,ref:2}}
     ]
   },
   {
     area:'Welsh Language', id:'language',
     q:'Welsh language policy in public life should...',
     opts:[
-      {t:'Pursue full bilingualism — Welsh equal to English across all public services',  s:{lab:1,con:0,pc:3,ld:1,grn:2,ref:0}},
-      {t:'Support the one million speakers target and grow the language, keeping it voluntary', s:{lab:3,con:1,pc:2,ld:2,grn:2,ref:0}},
-      {t:'Maintain current support but ensure English speakers are never disadvantaged',  s:{lab:1,con:3,pc:0,ld:1,grn:1,ref:1}},
-      {t:'Review Welsh language spending for value — public services must work for all, Welsh and English speakers alike', s:{lab:0,con:1,pc:0,ld:0,grn:0,ref:3}}
+      // Plaid Cymru 2026 manifesto: full bilingualism, Welsh equal to English across all public services
+      {t:'Pursue full bilingualism — Welsh equal to English across all public services',
+       s:{lab:1,con:0,pc:3,ld:1,grn:2,ref:0}},
+      // Welsh Labour 2026 manifesto: one million Welsh speakers target, grow the language voluntarily
+      {t:'Support the one million speakers target and grow the language without compulsion',
+       s:{lab:3,con:1,pc:2,ld:1,grn:1,ref:0}},
+      // Welsh Lib Dems 2026 manifesto: supporting Welsh culture and language as part of a stronger Wales
+      {t:'Actively support Welsh culture and language while ensuring services work well for English speakers too',
+       s:{lab:1,con:1,pc:1,ld:3,grn:2,ref:0}},
+      // Reform UK 2026 manifesto: review Welsh language spending, ensure English speakers not disadvantaged
+      {t:'Review Welsh language spending for value — public services must work for all, not disadvantage English speakers',
+       s:{lab:0,con:2,pc:0,ld:0,grn:0,ref:3}}
     ]
   }
 ];
