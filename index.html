@@ -17,7 +17,6 @@
 <meta name="twitter:title" content="VoteWise — Find Your Party Match | Welsh Senedd 2026">
 <meta name="twitter:description" content="Not sure who to vote for in Wales? Answer 12 questions and find which party best matches your views.">
 <meta name="twitter:image" content="https://votewise.info/og-image.png">
-<meta name="twitter:site" content="@votewise">
 <meta name="robots" content="index, follow">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <script type="application/ld+json">
@@ -150,6 +149,30 @@ body{font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;b
 .back-btn{background:none;border:1px solid var(--border-strong);font-size:.77rem;color:var(--muted);cursor:pointer;padding:9px 16px;font-family:inherit;display:inline-block;margin-top:12px;transition:all .12s}
 .back-btn:hover{border-color:var(--ink);color:var(--ink)}
 
+/* Policy context toggle */
+.ctx-btn{background:none;border:none;padding:0 0 14px;cursor:pointer;font-size:.72rem;color:var(--accent);font-family:inherit;text-decoration:underline;display:inline-block;letter-spacing:.01em}
+.ctx-panel{background:var(--section);border:1px solid var(--border);border-left:3px solid var(--accent);padding:11px 14px;font-size:.79rem;color:var(--muted);line-height:1.65;margin-bottom:14px;display:none}
+.ctx-panel.open{display:block}
+
+/* Answer breakdown */
+.breakdown-box{background:var(--surface);border:1px solid var(--border);overflow:hidden;margin-bottom:12px}
+.breakdown-hdr{padding:10px 16px;font-size:.63rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);border-bottom:1px solid var(--border);background:var(--section);cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none}
+.breakdown-hdr:hover{color:var(--ink)}
+.breakdown-body{display:none}
+.breakdown-body.open{display:block}
+.bd-row{display:flex;align-items:flex-start;gap:11px;padding:10px 16px;border-bottom:1px solid var(--border)}
+.bd-row:last-child{border-bottom:none}
+.bd-num{width:18px;font-size:.72rem;color:var(--faint);font-weight:600;flex-shrink:0;padding-top:2px;text-align:center}
+.bd-mid{flex:1;min-width:0}
+.bd-area{font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:var(--accent);margin-bottom:2px}
+.bd-text{font-size:.78rem;color:var(--ink);line-height:1.45;margin-bottom:5px}
+.bd-party{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.bd-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;display:inline-block}
+.bd-pname{font-size:.69rem;font-weight:600;color:var(--muted)}
+.bd-sep{font-size:.69rem;color:var(--faint)}
+.bd-src{font-size:.69rem;color:var(--muted);text-decoration:underline}
+.bd-src:hover{color:var(--ink)}
+
 /* Policy badges */
 .res-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
 .res-tag{font-size:.6rem;font-weight:600;padding:2px 6px;border-radius:2px;background:var(--section);color:var(--muted);border:1px solid var(--border)}
@@ -248,6 +271,7 @@ body{font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;b
     </div>
     <div class="q-card">
       <h2 id="qText"></h2>
+      <div id="qCtxWrap"></div>
       <div class="opts" id="qOpts"></div>
     </div>
     <button class="back-btn" id="backBtn" onclick="goBack()">← Previous question</button>
@@ -270,6 +294,12 @@ body{font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;b
     <div class="all-box">
       <div class="all-box-hdr">All parties ranked</div>
       <div id="allRows"></div>
+    </div>
+    <div class="breakdown-box">
+      <div class="breakdown-hdr" onclick="toggleBreakdown(this)">
+        How we matched you <span class="bd-chevron">▸</span>
+      </div>
+      <div class="breakdown-body" id="breakdownBody"></div>
     </div>
     <div class="share-row">
       <button class="btn btn-red" onclick="doShare()">Share results</button>
@@ -417,6 +447,7 @@ const P = [
 const Q = [
   {
     area:'NHS Wales', id:'nhs',
+    ctx:'The NHS in Wales is run by the Senedd, not Westminster — waiting times, hospital investment and workforce planning are all devolved decisions. All parties agree more improvement is needed; the debate is about how to fund it, what role private providers should play, and which services to prioritise.',
     q:'The NHS in Wales should be...',
     opts:[
       // Welsh Labour 2026: £4bn hospitals investment, 48-hour urgent care guarantee
@@ -441,6 +472,7 @@ const Q = [
   },
   {
     area:'Education & Schools', id:'education',
+    ctx:'Wales replaced SATs-style testing with the broader Curriculum for Wales in 2022. Results in international comparisons have been mixed — some welcome the creative focus, others argue literacy and numeracy standards have slipped. The debate is about rigorous testing vs broader learning, and how much to expand Welsh-medium schooling.',
     q:'Schools in Wales should primarily focus on...',
     opts:[
       // Welsh Labour 2026: school investment, teacher retention, literacy and numeracy
@@ -465,6 +497,7 @@ const Q = [
   },
   {
     area:'Housing & Rent', id:'housing',
+    ctx:'Wales has a significant housing crisis — rents have risen sharply while social housing waiting lists have grown. The Senedd has devolved planning powers and can fund social housebuilding. Parties divide between rent controls and large-scale public building on one side, and deregulating planning to stimulate private development on the other.',
     q:'To tackle the housing crisis in Wales, we should...',
     opts:[
       // Welsh Labour 2026: 100,000 new homes, 40,000 social, end homelessness
@@ -489,6 +522,7 @@ const Q = [
   },
   {
     area:'Climate & Environment', id:'climate',
+    ctx:'Wales has a net zero target for 2050. The Senedd controls some energy and planning decisions, though major infrastructure projects ultimately need Westminster sign-off. The central debate is how fast to act, what role nuclear power should play (especially at Wylfa on Anglesey), and whether climate targets should be eased to protect bills and jobs.',
     q:'On climate and the environment, Wales should...',
     opts:[
       // Welsh Labour 2026: net zero 2050, ban fracking, 100% clean electricity by 2035
@@ -513,6 +547,7 @@ const Q = [
   },
   {
     area:'Economy & Jobs', id:'economy',
+    ctx:'Wales has historically lower wages and productivity than the UK average. The Senedd has limited tax-varying powers but can direct spending on businesses, workers and enterprise. Parties divide between cutting taxes to attract investment and using direct public funding — workers\' rights, development banks and green industries — to grow the economy.',
     q:'The Welsh economy would be best served by...',
     opts:[
       // Welsh Labour 2026: Real Living Wage, workers rights, end exploitative zero-hours
@@ -537,6 +572,7 @@ const Q = [
   },
   {
     area:'Devolution & Independence', id:'devolution',
+    ctx:'Wales has had devolved government since 1999 but has fewer powers than Scotland — policing, justice and most tax policy remain with Westminster. Support for Welsh independence has grown. The question is whether Wales should seek more powers within the UK, push for independence, or broadly maintain the current settlement.',
     q:'On Wales\'s constitutional future, I believe...',
     opts:[
       // Welsh Labour 2026: more powers including Crown Estate revenues and youth justice
@@ -561,6 +597,7 @@ const Q = [
   },
   {
     area:'Transport & Roads', id:'transport',
+    ctx:'Transport is devolved to Wales. The Welsh Government\'s 2023 blanket 20mph speed limit and freeze on major new road projects have been highly controversial. Parties divide sharply on road building versus public transport investment, and on whether to reverse the 20mph limit.',
     q:'Transport spending in Wales should prioritise...',
     opts:[
       // Welsh Labour 2026: South Wales Metro, electrify 170km of railway, £2 bus cap
@@ -585,6 +622,7 @@ const Q = [
   },
   {
     area:'Social Care', id:'socialcare',
+    ctx:'Social care for older and disabled people is under severe funding pressure across the UK. Wales has taken a different path to England, resisting some privatisation. The debate is whether to create a National Care Service (like the NHS), introduce means-tested state support, or make personal care universally free at the point of need.',
     q:'For elderly and disabled people who need care, Wales should...',
     opts:[
       // Welsh Labour 2026: National Care and Support Service, fairly paid care workers
@@ -609,6 +647,7 @@ const Q = [
   },
   {
     area:'Policing & Justice', id:'policing',
+    ctx:'Policing in Wales is not devolved — it sits with the UK Home Office. However, the Welsh Government can act on crime prevention, rehabilitation and community safety. Plaid Cymru seek to devolve justice and policing entirely to the Senedd, a position that divides parties significantly.',
     q:'To keep Welsh communities safe and reduce crime, we should...',
     opts:[
       // Welsh Labour 2026: more police, tackle anti-social behaviour, support victims
@@ -633,6 +672,7 @@ const Q = [
   },
   {
     area:'Agriculture & Farming', id:'agriculture',
+    ctx:'Since Brexit, Welsh farmers receive payments through the Sustainable Farming Scheme (SFS) rather than EU direct payments. The SFS has been highly contested — farmers have protested its environmental conditions. Parties differ on subsidy levels, the environmental requirements attached to payments, and how to open post-Brexit export markets.',
     q:'Welsh farming should be supported by...',
     opts:[
       // Welsh Labour 2026: Welsh food brands, export markets, stable farm prices
@@ -657,6 +697,7 @@ const Q = [
   },
   {
     area:'Energy', id:'energy',
+    ctx:'Wales has significant renewable energy potential — offshore wind, tidal and hydro. Wylfa on Anglesey is a potential nuclear site. Most energy policy is reserved to Westminster, but the Senedd influences planning and can invest in local energy projects. The debate centres on nuclear, the pace of renewable deployment, and whether to retain fossil fuel production.',
     q:'Wales should power itself through...',
     opts:[
       // Welsh Labour 2026: nuclear at Wylfa, 1.5GW locally owned renewables by 2035
@@ -681,6 +722,7 @@ const Q = [
   },
   {
     area:'Welsh Language', id:'language',
+    ctx:'Around 900,000 people (29% of Wales) speak Welsh, which has official status alongside English. The Welsh Government aims for one million speakers by 2050. Parties disagree on how actively to promote Welsh, whether to pursue full bilingualism across all public services, and how to balance Welsh-medium provision with English-language need.',
     q:'Welsh language policy in public life should...',
     opts:[
       // Welsh Labour 2026: one million speakers by 2050, grow without compulsion
@@ -731,6 +773,10 @@ function renderQ(i, selectedJ=-1){
   document.getElementById('qNum').textContent=`${i+1} of ${Q.length}`;
   document.getElementById('qText').textContent=q.q;
   document.getElementById('backBtn').style.visibility=i===0?'hidden':'visible';
+  const ctxWrap=document.getElementById('qCtxWrap');
+  if(q.ctx){
+    ctxWrap.innerHTML=`<button class="ctx-btn" onclick="toggleCtx(this)">What's this about?</button><div class="ctx-panel">${q.ctx}</div>`;
+  } else { ctxWrap.innerHTML=''; }
   const el=document.getElementById('qOpts');
   el.setAttribute('role','radiogroup');
   el.setAttribute('aria-labelledby','qText');
@@ -758,6 +804,18 @@ function goBack(){
   Object.entries(Q[cur-1].opts[last.j].s).forEach(([id,pts])=>sc[id]=(sc[id]||0)-pts);
   cur--;
   renderQ(cur,last.j);
+}
+
+function toggleCtx(btn){
+  const panel=btn.nextElementSibling;
+  panel.classList.toggle('open');
+  btn.textContent=panel.classList.contains('open')?"Hide explanation":"What's this about?";
+}
+
+function toggleBreakdown(hdr){
+  const body=document.getElementById('breakdownBody');
+  body.classList.toggle('open');
+  hdr.querySelector('.bd-chevron').textContent=body.classList.contains('open')?'▾':'▸';
 }
 
 function pick(j){
@@ -838,6 +896,26 @@ function buildResults(){
       <span class="mfst-dot" style="background:${p.color}"></span>${p.name}
     </a>`
   ).join('');
+
+  // Breakdown: per-question answer source
+  document.getElementById('breakdownBody').innerHTML=ans.map((a,i)=>{
+    const q=Q[i]; const opt=q.opts[a.j];
+    const primaryId=Object.entries(opt.s).find(([,v])=>v===3)?.[0];
+    const party=primaryId?P.find(p=>p.id===primaryId):null;
+    return `<div class="bd-row">
+      <div class="bd-num">${i+1}</div>
+      <div class="bd-mid">
+        <div class="bd-area">${q.area}</div>
+        <div class="bd-text">"${opt.t}"</div>
+        ${party?`<div class="bd-party">
+          <span class="bd-dot" style="background:${party.color}"></span>
+          <span class="bd-pname">${party.name} position</span>
+          <span class="bd-sep">·</span>
+          <a class="bd-src" href="${party.url}" target="_blank" rel="noopener noreferrer">View manifesto ↗</a>
+        </div>`:''}
+      </div>
+    </div>`;
+  }).join('');
 }
 
 function lightOnColor(hex){

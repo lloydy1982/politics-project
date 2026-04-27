@@ -149,6 +149,30 @@ body{font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;b
 .back-btn{background:none;border:1px solid var(--border-strong);font-size:.77rem;color:var(--muted);cursor:pointer;padding:9px 16px;font-family:inherit;display:inline-block;margin-top:12px;transition:all .12s}
 .back-btn:hover{border-color:var(--ink);color:var(--ink)}
 
+/* Policy context toggle */
+.ctx-btn{background:none;border:none;padding:0 0 14px;cursor:pointer;font-size:.72rem;color:var(--accent);font-family:inherit;text-decoration:underline;display:inline-block;letter-spacing:.01em}
+.ctx-panel{background:var(--section);border:1px solid var(--border);border-left:3px solid var(--accent);padding:11px 14px;font-size:.79rem;color:var(--muted);line-height:1.65;margin-bottom:14px;display:none}
+.ctx-panel.open{display:block}
+
+/* Answer breakdown */
+.breakdown-box{background:var(--surface);border:1px solid var(--border);overflow:hidden;margin-bottom:12px}
+.breakdown-hdr{padding:10px 16px;font-size:.63rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);border-bottom:1px solid var(--border);background:var(--section);cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none}
+.breakdown-hdr:hover{color:var(--ink)}
+.breakdown-body{display:none}
+.breakdown-body.open{display:block}
+.bd-row{display:flex;align-items:flex-start;gap:11px;padding:10px 16px;border-bottom:1px solid var(--border)}
+.bd-row:last-child{border-bottom:none}
+.bd-num{width:18px;font-size:.72rem;color:var(--faint);font-weight:600;flex-shrink:0;padding-top:2px;text-align:center}
+.bd-mid{flex:1;min-width:0}
+.bd-area{font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:var(--accent);margin-bottom:2px}
+.bd-text{font-size:.78rem;color:var(--ink);line-height:1.45;margin-bottom:5px}
+.bd-party{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.bd-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;display:inline-block}
+.bd-pname{font-size:.69rem;font-weight:600;color:var(--muted)}
+.bd-sep{font-size:.69rem;color:var(--faint)}
+.bd-src{font-size:.69rem;color:var(--muted);text-decoration:underline}
+.bd-src:hover{color:var(--ink)}
+
 /* Policy badges */
 .res-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
 .res-tag{font-size:.6rem;font-weight:600;padding:2px 6px;border-radius:2px;background:var(--section);color:var(--muted);border:1px solid var(--border)}
@@ -245,6 +269,7 @@ body{font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;b
     </div>
     <div class="q-card">
       <h2 id="qText"></h2>
+      <div id="qCtxWrap"></div>
       <div class="opts" id="qOpts"></div>
     </div>
     <button class="back-btn" id="backBtn" onclick="goBack()">← Previous question</button>
@@ -267,6 +292,12 @@ body{font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;b
     <div class="all-box">
       <div class="all-box-hdr">All parties ranked</div>
       <div id="allRows"></div>
+    </div>
+    <div class="breakdown-box">
+      <div class="breakdown-hdr" onclick="toggleBreakdown(this)">
+        How we matched you <span class="bd-chevron">▸</span>
+      </div>
+      <div class="breakdown-body" id="breakdownBody"></div>
     </div>
     <div class="share-row">
       <button class="btn btn-red" onclick="doShare()">Share results</button>
@@ -403,6 +434,7 @@ const P = [
 const Q = [
   {
     area:'NHS Scotland', id:'nhs',
+    ctx:'NHS Scotland is fully managed by Holyrood, not Westminster. It faces severe pressure — long waiting times, staff shortages and funding gaps. All parties want improvement; they differ on whether the fix is simply more investment, structural reform, or introducing greater efficiency through independent review.',
     q:"Scotland's NHS should be...",
     opts:[
       // Scottish Labour 2026: funding following patient, cut wait times
@@ -427,6 +459,7 @@ const Q = [
   },
   {
     area:'Education & Schools', id:'education',
+    ctx:"Scotland's education system, long held up as a model, has seen results slip in international comparisons. The Curriculum for Excellence, introduced in 2010, faces criticism for lower literacy and numeracy standards. The debate is whether to restore rigorous testing, reform the curriculum, or address the issues through more teachers and resources.",
     q:'Schools in Scotland should primarily focus on...',
     opts:[
       // Scottish Labour 2026: 2,000 more teachers, 1,500 classroom assistants
@@ -451,6 +484,7 @@ const Q = [
   },
   {
     area:'Housing & Rent', id:'housing',
+    ctx:"Scotland declared a national housing emergency in 2023. Rents have risen sharply while the social housebuilding programme has stalled. The SNP Government introduced rent controls that have been contested by landlords. Parties divide on the scale of public housebuilding, private sector deregulation, and tenant protections.",
     q:"To fix Scotland's housing crisis, we should...",
     opts:[
       // Scottish Labour 2026: 125,000 new homes by 2031
@@ -475,6 +509,7 @@ const Q = [
   },
   {
     area:'Climate & Environment', id:'climate',
+    ctx:"Scotland has more ambitious net zero targets than the rest of the UK, aiming for 2045. But the North Sea oil and gas industry remains a major employer. The debate centres on how to transition fairly without destroying the communities that depend on fossil fuels, and whether Scotland should lead on climate or protect existing energy industries.",
     q:"On climate change and Scotland's environment, we should...",
     opts:[
       // Scottish Labour 2026: climate action protecting workers and industries
@@ -499,6 +534,7 @@ const Q = [
   },
   {
     area:'Economy & Jobs', id:'economy',
+    ctx:"Scotland's economic debate is inseparable from the constitutional question — independence supporters argue Scotland would be better off as its own country, unionists argue the opposite. Parties also differ on tax levels, the role of public investment in green industries, and how to tackle Scotland's productivity and wage gaps.",
     q:'The Scottish economy would be best served by...',
     opts:[
       // Scottish Labour 2026: skilled jobs, fair wages, backing Scottish industry
@@ -523,6 +559,7 @@ const Q = [
   },
   {
     area:'Scottish Independence', id:'independence',
+    ctx:"The 2014 independence referendum returned a 55-45 No vote, but support has remained around 50-50 since. The SNP and Greens back independence; Labour, Conservatives and Reform oppose it; the Lib Dems favour a federal UK. A central question is whether and how a second referendum should happen, and what currency and economic model an independent Scotland would use.",
     q:"On Scotland's constitutional future, I believe...",
     opts:[
       // Scottish Labour 2026: devolution delivering, focus on existing powers
@@ -547,6 +584,7 @@ const Q = [
   },
   {
     area:'Transport', id:'transport',
+    ctx:"Transport is largely devolved to Holyrood. ScotRail was nationalised in 2022. The ferry crisis — ageing vessels and cancelled routes to island communities — has been a major political controversy. Road quality, potholes and active travel investment are also contested. Parties divide sharply on roads vs rail vs ferries vs active travel.",
     q:'Transport spending in Scotland should prioritise...',
     opts:[
       // Scottish Labour 2026: better roads and Glasgow airport rail link
@@ -571,6 +609,7 @@ const Q = [
   },
   {
     area:'Social Care', id:'socialcare',
+    ctx:"Scotland has had free personal care for over-65s since 2002 — a significant policy achievement. But the sector faces a workforce crisis and severe funding pressure. The SNP Government proposed a National Care Service to centralise care under Holyrood, but this has been contested by councils and unions over cost and governance.",
     q:'For elderly and disabled people who need care in Scotland, we should...',
     opts:[
       // Scottish Labour 2026: £15/hr care workers, 1,000 more care-at-home packages
@@ -595,6 +634,7 @@ const Q = [
   },
   {
     area:'Policing & Justice', id:'policing',
+    ctx:"Scotland has a single national police force, Police Scotland, and justice is fully devolved to Holyrood. The 2021 Hate Crime Act has been highly controversial since enforcement began in 2024, with debates about free speech. Parties also differ on police numbers, sentencing policy, drug treatment approaches and community safety investment.",
     q:'To keep Scottish communities safe and tackle crime, we should...',
     opts:[
       // Scottish Labour 2026: community police officer in every neighbourhood
@@ -619,6 +659,7 @@ const Q = [
   },
   {
     area:'Agriculture & Fishing', id:'agriculture',
+    ctx:"Scotland's fishing industry had high hopes from Brexit — leaving the EU Common Fisheries Policy — but many fishers feel let down by the UK-EU trade deal. Scottish farming is also adapting to post-EU subsidy payments. Parties differ on support levels, land reform, fishing access rights, and how to back rural and island communities.",
     q:"Scotland's farming and fishing sectors should be supported by...",
     opts:[
       // Scottish Labour 2026: guaranteed secure markets, fair incomes for farmers and fishers
@@ -643,6 +684,7 @@ const Q = [
   },
   {
     area:'Energy', id:'energy',
+    ctx:"Scotland produces substantial renewable energy — wind, hydro and tidal — and remains a major North Sea oil and gas producer. Most energy policy sits with Westminster, but Holyrood influences planning and can invest in community energy. The debate is about how to transition from fossil fuels while protecting energy communities and keeping bills affordable.",
     q:'Scotland should power itself through...',
     opts:[
       // Scottish Labour 2026: renewables supporting managed transition from oil and gas
@@ -667,6 +709,7 @@ const Q = [
   },
   {
     area:'Scottish Culture', id:'culture',
+    ctx:"Scottish culture policy covers Gaelic (spoken by around 58,000 people), Scots language, arts funding and national institutions. The Scottish Government funds Gaelic through Bòrd na Gàidhlig. Parties differ on language investment levels, support for the arts sector and touring artists, and what publicly funded Scottish culture should look like.",
     q:"Investment in Scotland's culture, arts and languages should...",
     opts:[
       // Scottish Labour 2026: free museum access, protect Scottish public broadcasting
@@ -717,6 +760,10 @@ function renderQ(i, selectedJ=-1){
   document.getElementById('qNum').textContent=`${i+1} of ${Q.length}`;
   document.getElementById('qText').textContent=q.q;
   document.getElementById('backBtn').style.visibility=i===0?'hidden':'visible';
+  const ctxWrap=document.getElementById('qCtxWrap');
+  if(q.ctx){
+    ctxWrap.innerHTML=`<button class="ctx-btn" onclick="toggleCtx(this)">What's this about?</button><div class="ctx-panel">${q.ctx}</div>`;
+  } else { ctxWrap.innerHTML=''; }
   const el=document.getElementById('qOpts');
   el.setAttribute('role','radiogroup');
   el.setAttribute('aria-labelledby','qText');
@@ -744,6 +791,18 @@ function goBack(){
   Object.entries(Q[cur-1].opts[last.j].s).forEach(([id,pts])=>sc[id]=(sc[id]||0)-pts);
   cur--;
   renderQ(cur,last.j);
+}
+
+function toggleCtx(btn){
+  const panel=btn.nextElementSibling;
+  panel.classList.toggle('open');
+  btn.textContent=panel.classList.contains('open')?"Hide explanation":"What's this about?";
+}
+
+function toggleBreakdown(hdr){
+  const body=document.getElementById('breakdownBody');
+  body.classList.toggle('open');
+  hdr.querySelector('.bd-chevron').textContent=body.classList.contains('open')?'▾':'▸';
 }
 
 function pick(j){
@@ -816,6 +875,26 @@ function buildResults(){
       <span class="mfst-dot" style="background:${p.color}"></span>${p.name}
     </a>`
   ).join('');
+
+  // Breakdown: per-question answer source
+  document.getElementById('breakdownBody').innerHTML=ans.map((a,i)=>{
+    const q=Q[i]; const opt=q.opts[a.j];
+    const primaryId=Object.entries(opt.s).find(([,v])=>v===3)?.[0];
+    const party=primaryId?P.find(p=>p.id===primaryId):null;
+    return `<div class="bd-row">
+      <div class="bd-num">${i+1}</div>
+      <div class="bd-mid">
+        <div class="bd-area">${q.area}</div>
+        <div class="bd-text">"${opt.t}"</div>
+        ${party?`<div class="bd-party">
+          <span class="bd-dot" style="background:${party.color}"></span>
+          <span class="bd-pname">${party.name} position</span>
+          <span class="bd-sep">·</span>
+          <a class="bd-src" href="${party.url}" target="_blank" rel="noopener noreferrer">View manifesto ↗</a>
+        </div>`:''}
+      </div>
+    </div>`;
+  }).join('');
 }
 
 function lightOnColor(hex){
