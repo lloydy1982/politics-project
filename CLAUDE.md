@@ -12,54 +12,74 @@ Private GitHub repo: `lloydy1982/politics-project`
 
 ### VoteWise — Welsh Senedd 2026 Voting Guide (`index.html`)
 
-A single-page, zero-dependency party-matching quiz branded **VoteWise**, built for the Welsh Senedd 2026 election.
+A single-page, zero-dependency party-matching quiz for the Welsh Senedd 2026 election.
 
 **How it works:**
-- Full-screen disclaimer/landing screen shown on first load (skipped when loading a shared URL)
+- Full-screen disclaimer/landing screen on first load (skipped when loading a shared URL)
 - 12 questions across key Welsh policy areas
-- Each answer option has a hidden score object mapping party IDs to points (0–3)
-- After all 12 answers, each party's score is expressed as a percentage of their maximum possible score
+- 6 answer options per question — one per party, each drawn from that party's official 2026 manifesto
+- Each option has a hidden score object mapping party IDs to points (0–3); the party whose position it represents always scores 3
+- After all 12 answers, each party's score is expressed as a percentage of their maximum possible score (each party can max at 36)
 - Results show: winner card with match %, 2nd and 3rd place, all 6 parties ranked with animated bar chart
 - Share via Web Share API (mobile) or Twitter fallback; copy-to-clipboard with fallback
-- URL state: answers encoded as a 12-char `?r=` query param — results are directly shareable and bookmarkable
+- URL state: answers encoded as a 12-char `?r=` query param (valid chars `0–5` for 6 options) — results are directly shareable and bookmarkable
+- Transparency note on results screen with links to all six official manifestos
 
 **Parties covered:** Welsh Labour, Welsh Conservatives, Plaid Cymru, Liberal Democrats, Green Party, Reform UK
 
-**Policy areas covered:** NHS Wales, Education & Schools, Housing & Rent, Climate & Environment, Economy & Jobs, Devolution & Independence, Transport & Roads, Social Care, Policing & Justice, Agriculture & Farming, Energy, Welsh Language
+**Policy areas:** NHS Wales, Education & Schools, Housing & Rent, Climate & Environment, Economy & Jobs, Devolution & Independence, Transport & Roads, Social Care, Policing & Justice, Agriculture & Farming, Energy, Welsh Language
+
+**Content accuracy:** All 72 option/party pairings sourced directly from official manifesto text files (`manifestos/*.txt`, extracted from PDFs). Full audit conducted against `lab.txt`, `con.txt`, `ld.txt`, `pc.txt`, `grn.txt`, `ref.txt`. Lib Dem Welsh language position confirmed against manifesto pp.46–47. Lib Dem energy policy confirmed renewables-only (no nuclear in manifesto). Secondary scores corrected throughout.
+
+**Manifesto source files:** `manifestos/` contains both the original PDFs and extracted `.txt` files for all six parties. Use the `.txt` files for future content checks.
+
+### VoteWise — Scottish Parliament 2026 Voting Guide (`scotland.html`)
+
+Identical quiz structure for the 2026 Holyrood election.
+
+**Parties covered:** Scottish Labour, Scottish Conservatives, SNP, Liberal Democrats, Scottish Greens, Reform UK Scotland
+
+**Policy areas:** NHS Scotland, Education & Schools, Housing & Rent, Climate & Environment, Economy & Jobs, Scottish Independence, Transport, Social Care, Policing & Justice, Agriculture & Fishing, Energy, Scottish Culture
+
+**Content accuracy:** All 72 option/party pairings sourced from `manifestos-scotland/*.txt` (extracted from PDFs). Full audit conducted. SNP colour: `#D4A017` (gold). Reform Scotland Hate Crime Act abolition and SNP ferry/transport positions confirmed from manifesto text.
+
+**Manifesto source files:** `manifestos-scotland/` contains PDFs and `.txt` files for all six parties.
+
+### Shared infrastructure
 
 **Tech stack:** Pure HTML/CSS/JS — no build system, no dependencies, works offline
 
-**Design:** Clean editorial style. White (`#ffffff`) background, dark slate (`#1a2332`) text, mid-blue (`#2563eb`) accent on buttons/highlights, light grey (`#f8f9fa`) section backgrounds, `#e5e7eb` borders. Inter (Google Fonts) throughout. Flat cards, minimal border radius, 3px blue progress bar.
+**Design:** Clean editorial style. White (`#ffffff`) background, dark slate (`#1a2332`) text, teal (`#0d9488`) accent — chosen to be clearly distinct from Reform UK's cyan (`#12B6CF`). Light grey (`#f8f9fa`) section backgrounds, `#e5e7eb` borders. Inter (Google Fonts). Flat cards, minimal border radius, 3px teal progress bar.
 
-**Content accuracy:** All 48 answer option/party pairings were audited against the six official Welsh Senedd 2026 manifestos (April 2026). 14 text corrections and multiple scoring corrections were applied. Sources: official manifesto pages, ITV Wales, LabourList, State of Wales, CIEEM, Friends of the Earth Cymru, Will Hayward Wales newsletter. Lib Dem nuclear and Welsh language positions were resolved against available sources.
+**Election nav:** Both pages have a nav bar linking between Wales and Scotland quizzes, with the active election underlined in teal.
 
 **Analytics:** Anonymous usage tracking via Counter.dev (script in `<head>`, no personal data).
 
-**Logos:** Local SVG wordmarks in `logos/` (lab.svg, con.svg, pc.svg, ld.svg, grn.svg, ref.svg) — no external dependencies.
+**Logos:** Local SVG wordmarks in `logos/` — Wales: `lab.svg`, `con.svg`, `pc.svg`, `ld.svg`, `grn.svg`, `ref.svg`; Scotland: `slab.svg`, `scon.svg`, `snp.svg`, `sld.svg`, `sgrn.svg`, `sref.svg`.
 
-**Social sharing:** `og-image.png` (1200×630) in project root — matches current blue/white design, includes illustrative party result bars.
+**Social sharing:** `og-image.png` (1200×630) used by both quizzes — Wales-branded. Scotland currently uses the same image (see todos).
 
 **Accessibility:** Answer options use `role="radio"`, `aria-checked`, and arrow-key navigation. Options grouped with `role="radiogroup"`.
 
+**Hosting:** Live at `votewise.info` via GitHub Pages (repo made public) with Cloudflare DNS. CNAME file in repo root. If users report stale content, purge Cloudflare cache via dashboard → Caching → Purge Everything.
+
 ## No build system
 
-No package manager, bundler, test runner, or linter is set up yet. Add a Commands section to this file when tooling is introduced.
+No package manager, bundler, test runner, or linter. Add a Commands section when tooling is introduced.
 
 ## What still needs to be done
 
 ### Content
-- [ ] Verify Lib Dem Welsh language policy (Q12-B and Q12-C placements for LD are unconfirmed — manifesto PDF was not fully parsed)
-- [ ] Consider adding a "why" explanation card per question on the results screen showing which parties aligned with the user's chosen answer
-- [ ] Review whether the quiz needs a Welsh-language (`cy`) version
+- [ ] Review whether a Welsh-language (`cy`) version is needed
+- [ ] Consider a "why" explanation per question on results — showing which parties aligned with the user's answer
 
 ### Design / UX
-- [ ] Mobile test: verify layout on real small-screen devices (380px breakpoint is coded but untested on hardware)
-- [ ] Check colour contrast on party-coloured percentage figures in results (WCAG AA)
+- [ ] Create a Scotland-specific `og-image-scotland.png` (1200×630) and update `scotland.html` meta tags — currently uses the Wales image
+- [ ] Mobile hardware test: 380px breakpoint is coded but untested on a real device
+- [ ] WCAG AA colour contrast check on party-coloured percentage figures in results
 
 ### Features
-- [ ] Consider adding a brief policy explanation beneath each question (hidden by default, expandable)
+- [ ] Consider a brief expandable policy explanation beneath each question
 
 ### Infrastructure
-- [ ] Decide on hosting — GitHub Pages requires the repo to be public (currently private); alternatives: Netlify drop, Vercel, or upgrade GitHub plan
-- [ ] Add a custom domain if publishing publicly
-- [ ] Set up Prettier once the project grows beyond a single file
+- [ ] Set up Prettier once the project grows further
