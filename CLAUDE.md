@@ -69,17 +69,16 @@ No package manager, bundler, test runner, or linter. Add a Commands section when
 
 ## What still needs to be done
 
-### Content
-- [ ] Review whether a Welsh-language (`cy`) version is needed
-- [ ] Consider a "why" explanation per question on results — showing which parties aligned with the user's answer
-
-### Design / UX
-- [x] ~~Create a Scotland-specific `og-image-scotland.png` (1200×630) and update `scotland.html` meta tags~~ — done; `og-image-scotland.png` generated with Scotland party colours
-- [ ] Mobile hardware test: 380px breakpoint coded and reviewed; options stack vertically so 6-option layout is safe, but untested on a real device
-- [x] ~~WCAG AA colour contrast check~~ — party colours are backgrounds only (bars, dots), not text; fallback logo boxes now use luminance-aware text colour (dark on LD/SNP/Reform/Con/Green, white on Labour)
-
-### Features
-- [ ] Consider a brief expandable policy explanation beneath each question
-
 ### Infrastructure
 - [ ] Set up Prettier once the project grows further
+
+## Completed
+
+- Welsh-language version — decided against
+- Scotland OG image — `og-image-scotland.png` (1200×630) with Scottish party colours
+- WCAG contrast — party colours are backgrounds only; fallback logo boxes use luminance-aware text
+- Mobile — tested on real device, confirmed working
+- Policy context toggles — "What's this about?" on every question (both quizzes)
+- Answer breakdown on results — "How we matched you" section with per-question source links to manifestos
+- Contact email — `hello@votewise.info` via Cloudflare Email Routing → Gmail; shown at bottom of results
+- twitter:site meta tag removed (account does not exist)
