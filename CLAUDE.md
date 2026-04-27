@@ -51,13 +51,15 @@ Identical quiz structure for the 2026 Holyrood election.
 
 **Design:** Clean editorial style. White (`#ffffff`) background, dark slate (`#1a2332`) text, teal (`#0d9488`) accent — chosen to be clearly distinct from Reform UK's cyan (`#12B6CF`). Light grey (`#f8f9fa`) section backgrounds, `#e5e7eb` borders. Inter (Google Fonts). Flat cards, minimal border radius, 3px teal progress bar.
 
+**Results UI:** Winner card has a subtle party-colour background tint (4% opacity) and the match percentage number is coloured with the winning party's colour. Runner-up cards have a 3px coloured top border. Result bars are 8px tall. Answer options show A–F labels.
+
 **Election nav:** Both pages have a nav bar linking between Wales and Scotland quizzes, with the active election underlined in teal.
 
 **Analytics:** Anonymous usage tracking via Counter.dev (script in `<head>`, no personal data).
 
 **Logos:** Local SVG wordmarks in `logos/` — Wales: `lab.svg`, `con.svg`, `pc.svg`, `ld.svg`, `grn.svg`, `ref.svg`; Scotland: `slab.svg`, `scon.svg`, `snp.svg`, `sld.svg`, `sgrn.svg`, `sref.svg`.
 
-**Social sharing:** `og-image.png` (1200×630) used by both quizzes — Wales-branded. Scotland currently uses the same image (see todos).
+**Social sharing:** `og-image.png` (1200×630) Wales-branded; `og-image-scotland.png` (1200×630) Scotland-branded. Both use dark slate design with teal accent and party colour bars.
 
 **Accessibility:** Answer options use `role="radio"`, `aria-checked`, and arrow-key navigation. Options grouped with `role="radiogroup"`.
 
@@ -82,3 +84,4 @@ No package manager, bundler, test runner, or linter. Add a Commands section when
 - Answer breakdown on results — "How we matched you" section with per-question source links to manifestos
 - Contact email — `hello@votewise.info` via Cloudflare Email Routing → Gmail; shown at bottom of results
 - twitter:site meta tag removed (account does not exist)
+- Visual polish — A–F option labels, coloured winner %, party tint on winner card, thicker bars, coloured runner-up borders
