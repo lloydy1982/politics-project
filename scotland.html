@@ -405,120 +405,288 @@ const Q = [
     area:'NHS Scotland', id:'nhs',
     q:"Scotland's NHS should be...",
     opts:[
-      {t:'Kept fully public with record investment to cut waiting times — no privatisation whatsoever',              s:{snp:3,sgrn:2,slab:1,sld:1,scon:0,sref:0}},
-      {t:'Better staffed and community-based — a 10-year workforce plan and more mental health care',                s:{sld:3,slab:2,snp:1,sgrn:1,scon:0,sref:0}},
-      {t:'Reformed so funding follows the patient — treatment wherever is fastest, with streamlined management',     s:{slab:3,sld:1,scon:1,sref:1,snp:0,sgrn:0}},
-      {t:'Majorly reformed to cut management waste and bureaucracy — keeping all care free at point of need',        s:{scon:3,sref:2,slab:0,sld:0,snp:0,sgrn:0}}
+      // Scottish Labour 2026: funding following patient, cut wait times
+      {t:'Better funded with waiting times cut — funding following the patient',
+       s:{slab:3,scon:2,snp:1,sld:2,sgrn:0,sref:1}},
+      // Scottish Conservatives 2026: reform to cut management waste, keep free at point of need
+      {t:'Reformed to cut management waste while keeping care free at point of need',
+       s:{slab:1,scon:3,snp:0,sld:1,sgrn:0,sref:2}},
+      // SNP 2026: publicly owned, publicly delivered, free at point of need
+      {t:'Always publicly owned, publicly delivered and free at the point of need',
+       s:{slab:2,scon:0,snp:3,sld:2,sgrn:2,sref:0}},
+      // Scottish Lib Dems 2026: 10-year workforce plan, multidisciplinary GP teams
+      {t:'Given a 10-year workforce plan with multidisciplinary teams in every GP practice',
+       s:{slab:2,scon:1,snp:1,sld:3,sgrn:1,sref:0}},
+      // Scottish Greens 2026: more doctors and nurses funded through progressive wealth taxes
+      {t:'Resourced with more doctors and nurses, funded through progressive wealth taxes',
+       s:{slab:1,scon:0,snp:2,sld:1,sgrn:3,sref:0}},
+      // Scottish Reform 2026: AI, independent reform commission, cut bureaucracy
+      {t:'Reformed through an independent commission embracing AI to cut bureaucracy',
+       s:{slab:1,scon:2,snp:0,sld:0,sgrn:0,sref:3}}
     ]
   },
   {
     area:'Education & Schools', id:'education',
     q:'Schools in Scotland should primarily focus on...',
     opts:[
-      {t:'Maintaining the best teacher-pupil ratios in the UK and providing free meals in every school',             s:{snp:3,slab:1,sld:0,scon:0,sgrn:0,sref:0}},
-      {t:'2,000 more teachers and 1,500 classroom assistants to raise standards and support every pupil',            s:{slab:3,snp:1,sld:1,scon:0,sgrn:0,sref:0}},
-      {t:'A knowledge-based curriculum with rigorous testing and greater autonomy for head teachers',                s:{scon:3,sref:2,snp:0,slab:0,sld:0,sgrn:0}},
-      {t:'Universal funded childcare from six months and inclusive, creative learning environments',                 s:{sgrn:3,sld:2,snp:0,slab:0,scon:0,sref:0}}
+      // Scottish Labour 2026: 2,000 more teachers, 1,500 classroom assistants
+      {t:'Hiring 2,000 more teachers and 1,500 classroom assistants to raise standards',
+       s:{slab:3,scon:1,snp:0,sld:1,sgrn:0,sref:0}},
+      // Scottish Conservatives 2026: knowledge curriculum, rigorous testing, school autonomy
+      {t:'A knowledge-based curriculum with rigorous testing and greater school autonomy',
+       s:{slab:1,scon:3,snp:0,sld:1,sgrn:0,sref:2}},
+      // SNP 2026: lowest pupil-teacher ratio in UK, free school meals for all
+      {t:'Maintaining the best teacher ratios in the UK and free school meals for all',
+       s:{slab:1,scon:0,snp:3,sld:1,sgrn:2,sref:0}},
+      // Scottish Lib Dems 2026: play-based learning to age 7, smartphone-free classrooms
+      {t:'Play-based learning until age 7 and smartphone-free classroom environments',
+       s:{slab:1,scon:1,snp:1,sld:3,sgrn:2,sref:1}},
+      // Scottish Greens 2026: universal funded childcare from six months, inclusive creative learning
+      {t:'Universal funded childcare from six months and inclusive, creative learning',
+       s:{slab:0,scon:0,snp:1,sld:2,sgrn:3,sref:0}},
+      // Scottish Reform 2026: reboot Curriculum for Excellence, knowledge-based, rigorous exams
+      {t:'Rebooting Curriculum for Excellence with knowledge-based learning and rigorous exams',
+       s:{slab:0,scon:2,snp:0,sld:0,sgrn:0,sref:3}}
     ]
   },
   {
     area:'Housing & Rent', id:'housing',
     q:"To fix Scotland's housing crisis, we should...",
     opts:[
-      {t:'Invest billions in affordable homes — 70% for social rent, with strong tenant protections',                s:{snp:3,sgrn:1,slab:1,sld:0,scon:0,sref:0}},
-      {t:'Build 125,000 new homes and help working people get on the property ladder',                               s:{slab:3,snp:1,sld:1,scon:0,sgrn:0,sref:0}},
-      {t:'Deregulate the private rental sector and cut planning red tape to let the market build more homes',        s:{sref:3,scon:2,snp:0,slab:0,sld:0,sgrn:0}},
-      {t:'Community-owned affordable homes and warm, well-insulated housing through retrofitting programmes',        s:{sgrn:3,sld:2,snp:1,slab:0,scon:0,sref:0}}
+      // Scottish Labour 2026: 125,000 new homes by 2031
+      {t:'Build 125,000 new homes by 2031 to fix the broken housing market',
+       s:{slab:3,scon:1,snp:1,sld:1,sgrn:0,sref:0}},
+      // Scottish Conservatives 2026: deregulate planning, market-led building
+      {t:'Deregulate planning and cut housing red tape to let the market build more',
+       s:{slab:0,scon:3,snp:0,sld:0,sgrn:0,sref:2}},
+      // SNP 2026: 110,000 affordable homes by 2032, strong tenant protections
+      {t:'Deliver 110,000 affordable homes by 2032 with strong tenant protections',
+       s:{slab:1,scon:0,snp:3,sld:1,sgrn:1,sref:0}},
+      // Scottish Lib Dems 2026: 25,000 homes annually, key worker housing schemes
+      {t:'Return housebuilding to 25,000 homes a year with key worker housing schemes',
+       s:{slab:2,scon:1,snp:1,sld:3,sgrn:1,sref:0}},
+      // Scottish Greens 2026: community-owned warm homes, retrofitting
+      {t:'Build community-owned affordable homes and retrofit for warmth and efficiency',
+       s:{slab:0,scon:0,snp:1,sld:1,sgrn:3,sref:0}},
+      // Scottish Reform 2026: repeal SNP rental regulations, deregulate rentals
+      {t:'Repeal SNP rental regulations and deregulate the private rental sector',
+       s:{slab:0,scon:2,snp:0,sld:0,sgrn:0,sref:3}}
     ]
   },
   {
     area:'Climate & Environment', id:'climate',
     q:"On climate change and Scotland's environment, we should...",
     opts:[
-      {t:'Immediately end new oil and gas licences — 100% community-owned renewables now',                          s:{sgrn:3,snp:1,sld:1,slab:0,scon:0,sref:0}},
-      {t:'Pursue a just transition to net-zero by 2045 — protect energy workers while accelerating offshore wind',  s:{snp:3,slab:2,sld:1,sgrn:0,scon:0,sref:0}},
-      {t:'Invest ambitiously in green jobs and community energy to tackle the climate crisis',                       s:{sld:3,sgrn:2,slab:1,snp:0,scon:0,sref:0}},
-      {t:'Affordable, reliable energy from domestic oil, gas and nuclear — scrap net-zero targets',                 s:{sref:3,scon:2,snp:0,slab:0,sld:0,sgrn:0}}
+      // Scottish Labour 2026: climate action protecting workers and industries
+      {t:'Act on climate while protecting Scottish workers and existing industries',
+       s:{slab:3,scon:0,snp:1,sld:1,sgrn:1,sref:0}},
+      // Scottish Conservatives 2026: back oil and gas, end the ban on new nuclear
+      {t:"Back Scotland's oil and gas industry and end the ban on new nuclear power",
+       s:{slab:0,scon:3,snp:0,sld:0,sgrn:0,sref:2}},
+      // SNP 2026: just transition to net-zero 2045, protect workers, accelerate offshore wind
+      {t:'A just transition to net-zero by 2045 — protect energy workers, accelerate offshore wind',
+       s:{slab:2,scon:0,snp:3,sld:2,sgrn:1,sref:0}},
+      // Scottish Lib Dems 2026: ambitious renewables, community energy, green jobs
+      {t:'Ambitious investment in renewables and community energy to create green jobs',
+       s:{slab:1,scon:0,snp:1,sld:3,sgrn:2,sref:0}},
+      // Scottish Greens 2026: immediately end new oil and gas, 100% community renewables
+      {t:'Immediately end new oil and gas licences and build 100% community-owned renewables',
+       s:{slab:0,scon:0,snp:2,sld:1,sgrn:3,sref:0}},
+      // Scottish Reform 2026: scrap all net-zero targets, oil/gas/nuclear
+      {t:'Scrap all net-zero targets — reliable affordable energy from oil, gas and nuclear',
+       s:{slab:0,scon:2,snp:0,sld:0,sgrn:0,sref:3}}
     ]
   },
   {
     area:'Economy & Jobs', id:'economy',
     q:'The Scottish economy would be best served by...',
     opts:[
-      {t:'Community wealth building, employee-owned businesses and growing green industries',                        s:{snp:3,sgrn:2,slab:1,scon:0,sld:0,sref:0}},
-      {t:'Tax cuts and reduced regulation to incentivise hard work and grow the economy',                            s:{sref:3,scon:2,snp:0,slab:0,sld:0,sgrn:0}},
-      {t:'Investing in skills, apprenticeships and fair work — with targeted support for Scotland\'s small businesses',s:{slab:3,sld:2,snp:1,scon:0,sgrn:0,sref:0}},
-      {t:'Progressive taxation of wealth and polluters to fund public services and create green jobs',              s:{sgrn:3,slab:2,snp:1,scon:0,sld:0,sref:0}}
+      // Scottish Labour 2026: skilled jobs, fair wages, backing Scottish industry
+      {t:'Skilled jobs, fair wages and targeted investment in Scottish industry',
+       s:{slab:3,scon:0,snp:1,sld:1,sgrn:1,sref:0}},
+      // Scottish Conservatives 2026: tax cuts, reduced regulation
+      {t:'Tax cuts and reduced regulation to incentivise hard work and grow the economy',
+       s:{slab:0,scon:3,snp:0,sld:0,sgrn:0,sref:2}},
+      // SNP 2026: community wealth building, employee-owned businesses, green industries
+      {t:'Community wealth building, employee-owned businesses and growing green industries',
+       s:{slab:1,scon:0,snp:3,sld:1,sgrn:2,sref:0}},
+      // Scottish Lib Dems 2026: SME support through SNIB, fair work protections
+      {t:'SME support through the Scottish National Investment Bank with fair work protections',
+       s:{slab:1,scon:0,snp:1,sld:3,sgrn:1,sref:0}},
+      // Scottish Greens 2026: progressive wealth taxation, public services, green jobs
+      {t:'Progressive taxation of wealth to fund public services and create green jobs',
+       s:{slab:0,scon:0,snp:2,sld:1,sgrn:3,sref:0}},
+      // Scottish Reform 2026: income tax 1p below UK rates, deregulate
+      {t:'Cut income tax 1p below UK rates and significantly reduce business regulation',
+       s:{slab:0,scon:2,snp:0,sld:0,sgrn:0,sref:3}}
     ]
   },
   {
     area:'Scottish Independence', id:'independence',
     q:"On Scotland's constitutional future, I believe...",
     opts:[
-      {t:'Scotland should become independent — and rejoin the European Union',                                      s:{snp:3,sgrn:2,slab:0,scon:0,sld:0,sref:0}},
-      {t:'Scotland needs more powers — a stronger voice within a federal United Kingdom',                           s:{sld:3,slab:1,snp:0,scon:0,sgrn:0,sref:0}},
-      {t:'Devolution is delivering — focus on using the powers Scotland already has',                               s:{slab:3,sld:1,snp:1,scon:1,sgrn:0,sref:0}},
-      {t:'No to independence — Scotland is better and stronger in the United Kingdom',                              s:{scon:3,sref:2,snp:0,slab:0,sld:0,sgrn:0}}
+      // Scottish Labour 2026: devolution delivering, focus on existing powers
+      {t:'Devolution is delivering — focus on using the powers Scotland already has',
+       s:{slab:3,scon:1,snp:0,sld:1,sgrn:0,sref:1}},
+      // Scottish Conservatives 2026: no second referendum, Scotland stronger in UK
+      {t:'Scotland is stronger in the United Kingdom — no second independence referendum',
+       s:{slab:1,scon:3,snp:0,sld:0,sgrn:0,sref:2}},
+      // SNP 2026: independence and rejoin EU
+      {t:'Scotland should become independent — and rejoin the European Union',
+       s:{slab:0,scon:0,snp:3,sld:0,sgrn:2,sref:0}},
+      // Scottish Lib Dems 2026: federal UK, written constitution
+      {t:'A federal UK with a written constitution and stronger powers for Scotland',
+       s:{slab:2,scon:0,snp:0,sld:3,sgrn:0,sref:0}},
+      // Scottish Greens 2026: independence as path to fair green future
+      {t:'Scottish independence is the best path to a fair, green and equitable future',
+       s:{slab:0,scon:0,snp:2,sld:0,sgrn:3,sref:0}},
+      // Scottish Reform 2026: no independence distractions, fix the economy
+      {t:'No more independence distractions — fix the economy, not constitutional navel-gazing',
+       s:{slab:1,scon:2,snp:0,sld:0,sgrn:0,sref:3}}
     ]
   },
   {
     area:'Transport', id:'transport',
     q:'Transport spending in Scotland should prioritise...',
     opts:[
-      {t:'Free bus travel for everyone and a major expansion of Scotland\'s rail network',                          s:{sgrn:3,snp:1,slab:0,scon:0,sld:0,sref:0}},
-      {t:'Affordable public transport — a £2 bus cap, abolished peak rail fares and new stations',                  s:{snp:3,sgrn:1,slab:1,sld:2,scon:0,sref:0}},
-      {t:"Fixing Scotland's roads and the pothole crisis with a proper resurfacing programme",                      s:{scon:3,slab:2,sref:1,snp:0,sld:0,sgrn:0}},
-      {t:'The motorist first — end anti-car charges, improve roads and modernise ferry services',                   s:{sref:3,scon:1,snp:0,slab:0,sld:0,sgrn:0}}
+      // Scottish Labour 2026: better roads and Glasgow airport rail link
+      {t:'Better roads and delivering the long-overdue Glasgow airport rail link',
+       s:{slab:3,scon:2,snp:0,sld:1,sgrn:0,sref:0}},
+      // Scottish Conservatives 2026: pothole crisis, proper resurfacing programme
+      {t:"Fixing Scotland's roads — a proper resurfacing programme to end the pothole crisis",
+       s:{slab:1,scon:3,snp:1,sld:1,sgrn:0,sref:1}},
+      // SNP 2026: £2 bus cap, abolished peak rail fares
+      {t:'A £2 nationwide bus cap and abolishing peak rail fares for commuters',
+       s:{slab:1,scon:0,snp:3,sld:2,sgrn:1,sref:0}},
+      // Scottish Lib Dems 2026: fixing ferry crisis, island communities, rural access
+      {t:'Fixing the ferry crisis for island communities and improving rural road access',
+       s:{slab:2,scon:1,snp:1,sld:3,sgrn:1,sref:0}},
+      // Scottish Greens 2026: free bus travel, major rail network expansion
+      {t:"Free bus travel for everyone and a major expansion of Scotland's rail network",
+       s:{slab:0,scon:0,snp:2,sld:1,sgrn:3,sref:0}},
+      // Scottish Reform 2026: end anti-car charges, improve roads, modernise ferries
+      {t:'End anti-car charges, fix the roads and modernise the ferry fleet',
+       s:{slab:0,scon:2,snp:0,sld:0,sgrn:0,sref:3}}
     ]
   },
   {
     area:'Social Care', id:'socialcare',
     q:'For elderly and disabled people who need care in Scotland, we should...',
     opts:[
-      {t:'Pay care workers £15 per hour and deliver 1,000 more care at home packages',                             s:{slab:3,snp:1,sld:1,scon:0,sgrn:0,sref:0}},
-      {t:'A 10-year care workforce plan with integrated mental health and neighbourhood health hubs',               s:{sld:3,slab:2,snp:1,scon:0,sgrn:0,sref:0}},
-      {t:'Community-based prevention, mental health triage and drug and alcohol recovery services',                 s:{snp:3,sgrn:2,sld:1,slab:0,scon:0,sref:0}},
-      {t:'Give local authorities more control and ensure sustainable long-term care funding',                       s:{sref:3,scon:2,snp:0,slab:0,sld:0,sgrn:0}}
+      // Scottish Labour 2026: £15/hr care workers, 1,000 more care-at-home packages
+      {t:'Pay all care workers £15 per hour and deliver 1,000 more care-at-home packages',
+       s:{slab:3,scon:1,snp:1,sld:2,sgrn:0,sref:0}},
+      // Scottish Conservatives 2026: local council control, sustainable long-term funding
+      {t:'Give local councils more control over care with sustainable long-term funding',
+       s:{slab:1,scon:3,snp:0,sld:1,sgrn:0,sref:2}},
+      // SNP 2026: community-based care, mental health triage, drug and alcohol recovery
+      {t:'Community-based care with mental health triage and drug and alcohol recovery services',
+       s:{slab:1,scon:0,snp:3,sld:1,sgrn:2,sref:0}},
+      // Scottish Lib Dems 2026: 10-year workforce plan, neighbourhood health hubs
+      {t:'A 10-year care workforce plan with integrated neighbourhood health hubs',
+       s:{slab:2,scon:1,snp:2,sld:3,sgrn:1,sref:0}},
+      // Scottish Greens 2026: community prevention, mental health, fair carer wages
+      {t:'Community prevention, mental health support and fair wages for every carer',
+       s:{slab:0,scon:0,snp:1,sld:2,sgrn:3,sref:0}},
+      // Scottish Reform 2026: local authority control, support family carers
+      {t:'Give local authorities control and support families who care for their own',
+       s:{slab:0,scon:2,snp:0,sld:1,sgrn:0,sref:3}}
     ]
   },
   {
     area:'Policing & Justice', id:'policing',
     q:'To keep Scottish communities safe and tackle crime, we should...',
     opts:[
-      {t:'A community police officer in every neighbourhood with proper resources and support',                     s:{slab:3,snp:1,sld:0,scon:0,sgrn:0,sref:0}},
-      {t:'More police on the streets, longer sentences for repeat offenders and tough enforcement',                 s:{scon:3,sref:2,snp:0,slab:0,sld:0,sgrn:0}},
-      {t:'Mental health alternatives to policing and investment in prevention and drug treatment',                  s:{snp:3,sgrn:2,sld:2,slab:0,scon:0,sref:0}},
-      {t:'Community safety through inclusion — tackle inequality, poverty and hate',                               s:{sgrn:3,snp:1,slab:1,scon:0,sld:0,sref:0}}
+      // Scottish Labour 2026: community police officer in every neighbourhood
+      {t:'Put a community police officer in every neighbourhood with proper resources',
+       s:{slab:3,scon:1,snp:1,sld:1,sgrn:0,sref:0}},
+      // Scottish Conservatives 2026: more police on streets, longer sentences
+      {t:'More police on the streets and longer sentences for repeat offenders',
+       s:{slab:1,scon:3,snp:0,sld:0,sgrn:0,sref:2}},
+      // SNP 2026: mental health triage cars, drug treatment, reduce policing demand
+      {t:'Invest in mental health triage and drug treatment to reduce demand on policing',
+       s:{slab:1,scon:0,snp:3,sld:2,sgrn:2,sref:0}},
+      // Scottish Lib Dems 2026: crime prevention and mental health over enforcement
+      {t:'Prioritise crime prevention and mental health investment over enforcement',
+       s:{slab:1,scon:0,snp:2,sld:3,sgrn:2,sref:0}},
+      // Scottish Greens 2026: community safety through inclusion, tackle poverty and hate
+      {t:'Community safety through inclusion — tackle poverty, inequality and hate',
+       s:{slab:0,scon:0,snp:1,sld:1,sgrn:3,sref:0}},
+      // Scottish Reform 2026: abolish Hate Crime Act, restore free speech, end early release
+      {t:'Abolish the Hate Crime Act, restore free speech and end automatic early release',
+       s:{slab:0,scon:2,snp:0,sld:0,sgrn:0,sref:3}}
     ]
   },
   {
     area:'Agriculture & Fishing', id:'agriculture',
     q:"Scotland's farming and fishing sectors should be supported by...",
     opts:[
-      {t:'Generous direct payments with land reform giving tenant farmers more rights',                             s:{snp:3,sgrn:1,slab:1,scon:0,sld:0,sref:0}},
-      {t:'Reformed farm payments focused on active farmers — cut EU-derived red tape',                             s:{scon:3,sref:2,snp:0,slab:0,sld:0,sgrn:0}},
-      {t:'Payments linked to environmental outcomes — supporting nature restoration alongside farming',             s:{sgrn:3,sld:2,snp:1,slab:0,scon:0,sref:0}},
-      {t:'A fair deal for farmers and fishers — secure markets, fair incomes and practical support',               s:{slab:3,sld:2,snp:1,scon:0,sgrn:0,sref:0}}
+      // Scottish Labour 2026: guaranteed secure markets, fair incomes for farmers and fishers
+      {t:"Guaranteed secure markets and fair incomes for Scotland's farmers and fishers",
+       s:{slab:3,scon:1,snp:1,sld:2,sgrn:0,sref:0}},
+      // Scottish Conservatives 2026: reformed farm payments, cut EU red tape
+      {t:'Reformed farm payments focused on active farmers — cutting EU-derived red tape',
+       s:{slab:0,scon:3,snp:0,sld:0,sgrn:0,sref:2}},
+      // SNP 2026: generous direct payments, land reform, tenant farmer rights
+      {t:'Generous direct payments, land reform and more rights for tenant farmers',
+       s:{slab:1,scon:0,snp:3,sld:0,sgrn:1,sref:0}},
+      // Scottish Lib Dems 2026: fair deal for farmers, crofters and fishers
+      {t:'A fair deal for farmers, crofters and fishers with secure, long-term support',
+       s:{slab:2,scon:1,snp:1,sld:3,sgrn:1,sref:0}},
+      // Scottish Greens 2026: payments linked to nature restoration and sustainable farming
+      {t:'Payments linked to nature restoration and sustainable farming practices',
+       s:{slab:0,scon:0,snp:1,sld:1,sgrn:3,sref:0}},
+      // Scottish Reform 2026: cut EU-derived red tape, practical support
+      {t:'Scrapping EU-derived farming red tape and giving farmers practical support',
+       s:{slab:0,scon:2,snp:0,sld:0,sgrn:0,sref:3}}
     ]
   },
   {
     area:'Energy', id:'energy',
     q:'Scotland should power itself through...',
     opts:[
-      {t:'Community-owned renewables — wind, tidal, solar — with no new fossil fuel projects',                     s:{sgrn:3,snp:1,slab:0,scon:0,sld:0,sref:0}},
-      {t:'A just transition to renewables — support oil and gas workers while accelerating offshore wind',          s:{snp:3,slab:2,sld:1,sgrn:0,scon:0,sref:0}},
-      {t:'Ambitious renewable investment to cut bills and create well-paid green jobs',                             s:{sld:3,sgrn:2,slab:1,snp:0,scon:0,sref:0}},
-      {t:"Back Scotland's domestic oil and gas industry alongside new nuclear power",                              s:{sref:3,scon:2,snp:0,slab:0,sld:0,sgrn:0}}
+      // Scottish Labour 2026: renewables supporting managed transition from oil and gas
+      {t:'Renewable energy supporting a managed transition away from oil and gas',
+       s:{slab:3,scon:0,snp:2,sld:1,sgrn:1,sref:0}},
+      // Scottish Conservatives 2026: back oil and gas, new nuclear power
+      {t:"Scotland's domestic oil and gas industry alongside new nuclear power",
+       s:{slab:0,scon:3,snp:0,sld:0,sgrn:0,sref:2}},
+      // SNP 2026: just transition, protect oil and gas workers, accelerate offshore wind
+      {t:'A just transition from fossil fuels — protect workers and accelerate offshore wind',
+       s:{slab:2,scon:0,snp:3,sld:1,sgrn:1,sref:0}},
+      // Scottish Lib Dems 2026: ambitious renewables, cut household bills, green jobs
+      {t:'Ambitious renewable investment to cut household bills and create green jobs',
+       s:{slab:1,scon:0,snp:1,sld:3,sgrn:2,sref:0}},
+      // Scottish Greens 2026: community-owned renewables, no new fossil fuel projects
+      {t:'Community-owned renewables — wind, tidal and solar — with no new fossil fuel projects',
+       s:{slab:0,scon:0,snp:1,sld:1,sgrn:3,sref:0}},
+      // Scottish Reform 2026: Scottish oil, gas and nuclear, scrap net-zero ideology
+      {t:"Scottish oil, gas and nuclear — scrap the SNP's net-zero ideology",
+       s:{slab:0,scon:2,snp:0,sld:0,sgrn:0,sref:3}}
     ]
   },
   {
     area:'Scottish Culture', id:'culture',
     q:"Investment in Scotland's culture, arts and languages should...",
     opts:[
-      {t:'Expand significantly — a Youth Culture Pass, Gaelic expansion and a new National Culture Bill',          s:{snp:3,sld:1,sgrn:1,slab:0,scon:0,sref:0}},
-      {t:'Focus on fair regional distribution — support creative industries and touring artists',                  s:{sld:3,slab:1,scon:2,sref:1,snp:0,sgrn:0}},
-      {t:'Guarantee free access to museums and galleries and protect Scottish public broadcasting',                 s:{slab:3,sld:2,sgrn:1,snp:1,scon:0,sref:0}},
-      {t:"Champion Scotland's diverse, inclusive culture — celebrate difference and challenge hate",               s:{sgrn:3,slab:1,sld:1,snp:1,scon:0,sref:0}}
+      // Scottish Labour 2026: free museum access, protect Scottish public broadcasting
+      {t:'Guarantee free access to museums and galleries and protect Scottish public broadcasting',
+       s:{slab:3,scon:0,snp:1,sld:2,sgrn:1,sref:0}},
+      // Scottish Conservatives 2026: proportionate spending, practical for all communities
+      {t:"Be proportionate and work practically for all of Scotland's communities",
+       s:{slab:0,scon:3,snp:0,sld:2,sgrn:0,sref:1}},
+      // SNP 2026: Youth Culture Pass, Gaelic expansion, National Culture Bill
+      {t:'Expand significantly — a Youth Culture Pass, Gaelic expansion and a new Culture Bill',
+       s:{slab:1,scon:0,snp:3,sld:1,sgrn:2,sref:0}},
+      // Scottish Lib Dems 2026: fair regional distribution, creative industries, touring artists
+      {t:'Fair regional distribution — support creative industries and touring artists across Scotland',
+       s:{slab:1,scon:1,snp:0,sld:3,sgrn:1,sref:0}},
+      // Scottish Greens 2026: inclusive culture, celebrate diversity, challenge hate
+      {t:"Champion inclusive culture — celebrate Scotland's diversity and challenge hate",
+       s:{slab:0,scon:0,snp:1,sld:1,sgrn:3,sref:0}},
+      // Scottish Reform 2026: practical cultural spending, value for ordinary Scots
+      {t:'Focus on practical cultural spending that delivers value for ordinary Scots',
+       s:{slab:0,scon:2,snp:0,sld:0,sgrn:0,sref:3}}
     ]
   }
 ];
