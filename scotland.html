@@ -889,7 +889,7 @@ function pushUrlState(){
 (function loadFromUrl(){
   try{
     const r=new URLSearchParams(location.search).get('r');
-    if(!r||!/^[0-3]{12}$/.test(r))return;
+    if(!r||!/^[0-5]{12}$/.test(r))return;
     cur=0;ans=[];sc={};
     P.forEach(p=>sc[p.id]=0);
     r.split('').forEach((c,i)=>{
