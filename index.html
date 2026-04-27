@@ -104,9 +104,10 @@ body{font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;b
 .q-card{background:var(--surface);border:1px solid var(--border);padding:28px 24px}
 .q-card h2{font-family:'Inter',system-ui,sans-serif;font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:20px;line-height:1.55}
 .opts{display:flex;flex-direction:column;gap:6px}
-.opt{display:block;width:100%;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-left:3px solid transparent;text-align:left;cursor:pointer;font-size:.875rem;line-height:1.5;transition:all .12s;color:var(--ink);font-family:inherit}
+.opt{display:flex;align-items:baseline;gap:10px;width:100%;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-left:3px solid transparent;text-align:left;cursor:pointer;font-size:.875rem;line-height:1.5;transition:all .12s;color:var(--ink);font-family:inherit}
 .opt:hover{border-left-color:var(--accent);background:var(--accent-light);border-color:var(--accent-border)}
 .opt.sel{border-left-color:var(--accent);background:var(--accent-light);border-color:var(--accent-border);font-weight:500}
+.opt-lbl{font-size:.7rem;font-weight:700;color:var(--faint);flex-shrink:0;width:14px;text-align:center;letter-spacing:.02em}
 
 /* Results */
 .res-hdr{padding:28px 0 12px;border-bottom:2px solid var(--border);margin-bottom:20px}
@@ -141,7 +142,7 @@ body{font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;b
 .res-rank{width:18px;font-size:.74rem;color:var(--faint);font-weight:600;flex-shrink:0;text-align:center}
 .res-mid{flex:1}
 .res-pname{font-size:.78rem;font-weight:600;margin-bottom:5px}
-.res-track{height:4px;background:var(--section);overflow:hidden}
+.res-track{height:8px;background:var(--section);overflow:hidden}
 .res-bar{height:100%;width:0;transition:width 1.1s ease}
 .res-pct{font-size:.84rem;font-weight:700;width:36px;text-align:right;flex-shrink:0}
 
@@ -786,7 +787,7 @@ function renderQ(i, selectedJ=-1){
   q.opts.forEach((o,j)=>{
     const b=document.createElement('button');
     b.className='opt'+(j===selectedJ?' sel':'');
-    b.textContent=o.t;
+    b.innerHTML=`<span class="opt-lbl">${['A','B','C','D','E','F'][j]}</span><span>${o.t}</span>`;
     b.setAttribute('role','radio');
     b.setAttribute('aria-checked',j===selectedJ?'true':'false');
     b.onclick=()=>pick(j);
@@ -857,17 +858,19 @@ function buildResults(){
   // Set top border via a tiny style injection
   const styleEl=document.getElementById('win-border-style')||document.createElement('style');
   styleEl.id='win-border-style';
-  styleEl.textContent=`.win-card::before{background:${w.color}!important}`;
+  const rgb=w.color.replace('#','').match(/.{2}/g).map(h=>parseInt(h,16));
+  styleEl.textContent=`.win-card::before{background:${w.color}!important}.win-card{background:rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.04)!important}`;
   document.head.appendChild(styleEl);
 
   document.getElementById('winLogo').innerHTML=logoHtml(w,'logo-img','logo-fb');
   document.getElementById('winName').textContent=w.name;
   document.getElementById('winPct').innerHTML=`${w.pct}<span>% match</span>`;
+  document.getElementById('winPct').style.color=w.color;
   document.getElementById('winWhy').innerHTML=buildWhy(w);
 
   // Runners up
   document.getElementById('runners').innerHTML=[r2,r3].map((p,i)=>`
-    <div class="run-card">
+    <div class="run-card" style="border-top:3px solid ${p.color}">
       <div class="run-badge">${i===0?'2nd place':'3rd place'}</div>
       ${logoHtml(p,'run-logo-img','run-logo-fb')}
       <div class="run-name">${p.name}</div>
