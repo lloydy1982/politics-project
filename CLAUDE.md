@@ -74,9 +74,9 @@ No package manager, bundler, test runner, or linter. Add a Commands section when
 - [ ] Consider a "why" explanation per question on results — showing which parties aligned with the user's answer
 
 ### Design / UX
-- [ ] Create a Scotland-specific `og-image-scotland.png` (1200×630) and update `scotland.html` meta tags — currently uses the Wales image
-- [ ] Mobile hardware test: 380px breakpoint is coded but untested on a real device
-- [ ] WCAG AA colour contrast check on party-coloured percentage figures in results
+- [x] ~~Create a Scotland-specific `og-image-scotland.png` (1200×630) and update `scotland.html` meta tags~~ — done; `og-image-scotland.png` generated with Scotland party colours
+- [ ] Mobile hardware test: 380px breakpoint coded and reviewed; options stack vertically so 6-option layout is safe, but untested on a real device
+- [x] ~~WCAG AA colour contrast check~~ — party colours are backgrounds only (bars, dots), not text; fallback logo boxes now use luminance-aware text colour (dark on LD/SNP/Reform/Con/Green, white on Labour)
 
 ### Features
 - [ ] Consider a brief expandable policy explanation beneath each question
