@@ -834,7 +834,7 @@ function pick(j){
     ans.push({qid:q.id,j});
     Object.entries(q.opts[j].s).forEach(([id,pts])=>sc[id]=(sc[id]||0)+pts);
     cur++;
-    if(cur<Q.length){ renderQ(cur); }
+    if(cur<Q.length){ document.activeElement?.blur(); renderQ(cur); }
     else{ setProgress(Q.length,Q.length); buildResults(); screen('res'); pushUrlState(); }
   },240);
 }
